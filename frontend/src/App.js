@@ -45,10 +45,15 @@ const App = () => {
     reader.readAsArrayBuffer(file);
   };
 
-  const saveConfiguration = (columnMappings) => {
-    axios.post('/api/save-configuration', { columnMappings })
+  const saveConfiguration = (name,columnMappings) => {
+    const configuration = {
+      name,
+      columnMappings: {...columnMappings}
+    }
+
+    axios.post('/api/configurations', configuration)
       .then((response) => {
-        console.log('Configuration saved successfully!');
+        console.log('Configuration saved successfully:', response.data);
       })
       .catch((error) => {
         console.error('Error saving configuration:', error);

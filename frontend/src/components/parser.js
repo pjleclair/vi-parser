@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 const Parser = ({ onFileUpload, jsonData, onSaveConfiguration }) => {
   const [columnMappings, setColumnMappings] = useState({});
   const [sampleData, setSampleData] = useState([]);
+  const [name, setName] = useState('');
 
   useEffect(() => {
     if (jsonData && jsonData.length > 0) {
@@ -23,6 +24,10 @@ const Parser = ({ onFileUpload, jsonData, onSaveConfiguration }) => {
       ...prevState,
       [name]: value,
     }));
+  };
+
+  const handleInputChange = (e) => {
+    setName(e.target.value);
   };
 
   return (
@@ -81,7 +86,8 @@ const Parser = ({ onFileUpload, jsonData, onSaveConfiguration }) => {
               ))}
             </tbody>
           </table>
-          <button onClick={() => onSaveConfiguration(columnMappings)}>
+          <input type="text" value={name} onChange={handleInputChange} placeholder="Configuration Name" />
+          <button onClick={() => onSaveConfiguration(name, columnMappings)}>
             Save Configuration
           </button>
         </div>
