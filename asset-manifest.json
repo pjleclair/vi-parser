@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/pjleclair.github.io/vi-parser/static/css/main.d13e784e.css",
-    "main.js": "/pjleclair.github.io/vi-parser/static/js/main.79a07442.js",
+    "main.js": "/pjleclair.github.io/vi-parser/static/js/main.c6f40283.js",
     "index.html": "/pjleclair.github.io/vi-parser/index.html",
     "main.d13e784e.css.map": "/pjleclair.github.io/vi-parser/static/css/main.d13e784e.css.map",
-    "main.79a07442.js.map": "/pjleclair.github.io/vi-parser/static/js/main.79a07442.js.map"
+    "main.c6f40283.js.map": "/pjleclair.github.io/vi-parser/static/js/main.c6f40283.js.map"
   },
   "entrypoints": [
     "static/css/main.d13e784e.css",
-    "static/js/main.79a07442.js"
+    "static/js/main.c6f40283.js"
   ]
 }
