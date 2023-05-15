@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 const app = express();
-const port = 3000;
+const port = 8080;
 
 // MongoDB configuration
 const MONGO_URI = 'mongodb+srv://fullstack:fs0pen@cluster0.00quc3x.mongodb.net/?retryWrites=true&w=majority';
@@ -29,6 +29,7 @@ const Configuration = mongoose.model('Configuration', configurationSchema);
 
 // Middleware
 app.use(bodyParser.json());
+app.use(express.static('build'))
 
 // Save configuration endpoint
 app.post('/api/configurations', (req, res) => {
