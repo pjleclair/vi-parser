@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/vi-parser/static/css/main.d13e784e.css",
+    "main.js": "/vi-parser/static/js/main.c6f40283.js",
+    "index.html": "/vi-parser/index.html",
+    "main.d13e784e.css.map": "/vi-parser/static/css/main.d13e784e.css.map",
+    "main.c6f40283.js.map": "/vi-parser/static/js/main.c6f40283.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d13e784e.css",
+    "static/js/main.c6f40283.js"
+  ]
+}
