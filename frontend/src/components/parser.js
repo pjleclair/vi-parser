@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 //import './parser.css'; // Assuming you have a corresponding CSS file for styling
 
 const Parser = ({ onFileUpload, jsonData, onSaveConfiguration }) => {
   const [columnMappings, setColumnMappings] = useState({});
   const [sampleData, setSampleData] = useState([]);
   const [name, setName] = useState('');
+  const [uploadMsg, setUploadMsg] = useState({});
 
   useEffect(() => {
     if (jsonData && jsonData.length > 0) {
@@ -18,6 +20,14 @@ const Parser = ({ onFileUpload, jsonData, onSaveConfiguration }) => {
     }
   }, [jsonData]);
 
+  useEffect(()=> {
+    if (uploadMsg !== "") {
+      setTimeout(() => {
+        setUploadMsg("")
+      }, 5000);
+    }
+  },[uploadMsg])
+
   const handleColumnMapping = (e) => {
     const { name, value } = e.target;
     setColumnMappings((prevState) => ({
@@ -28,6 +38,23 @@ const Parser = ({ onFileUpload, jsonData, onSaveConfiguration }) => {
 
   const handleInputChange = (e) => {
     setName(e.target.value);
+  };
+
+  const saveConfiguration = (name,columnMappings) => {
+    const configuration = {
+      name,
+      columnMappings: {...columnMappings}
+    }
+
+    axios.post('/api/configurations', configuration)
+      .then((response) => {
+        console.log('Configuration saved successfully:', response.data);
+        setUploadMsg({msg: response.data.message, color: "green"});
+      })
+      .catch((error) => {
+        console.error('Error saving configuration:', error);
+        setUploadMsg({msg: error.response.data.error, color: "red"});
+      });
   };
 
   return (
@@ -87,9 +114,12 @@ const Parser = ({ onFileUpload, jsonData, onSaveConfiguration }) => {
             </tbody>
           </table>
           <input type="text" value={name} onChange={handleInputChange} placeholder="Configuration Name" />
-          <button onClick={() => onSaveConfiguration(name, columnMappings)}>
+          <button onClick={() => saveConfiguration(name, columnMappings)}>
             Save Configuration
           </button>
+          {(uploadMsg) && (
+            <div style={{color: uploadMsg.color, fontWeight: "bolder", marginTop: "1rem"}}>{uploadMsg.msg}</div>
+          )}
         </div>
       )}
     </div>

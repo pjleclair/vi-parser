@@ -2,64 +2,90 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const FileProcessor = () => {
+  const [file, setFile] = useState(null);
   const [configurations, setConfigurations] = useState([]);
-  const [selectedConfiguration, setSelectedConfiguration] = useState('');
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedConfiguration, setSelectedConfiguration] = useState(null);
+  const [uploadMsg, setUploadMsg] = useState({});
 
   useEffect(() => {
-    axios
-      .get('/api/configurations') // Replace with the appropriate API endpoint
-      .then((response) => {
-        setConfigurations(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching configurations:', error);
-      });
+    fetchConfigurations();
   }, []);
 
-  const handleConfigurationSelect = (e) => {
-    setSelectedConfiguration(e.target.value);
+  useEffect(()=> {
+    if (uploadMsg !== "") {
+      setTimeout(() => {
+        setUploadMsg("")
+      }, 5000);
+    }
+  },[uploadMsg])
+
+  const fetchConfigurations = () => {
+      axios.get('/api/configurations')
+      .then((response) => {
+        setConfigurations(response.data)
+      })
+      .catch((error) => {
+        console.log('Error fetching configurations:', error);
+    });
   };
 
-  const handleFileChange = (e) => {
-    setSelectedFile(e.target.files[0]);
+  const handleConfigurationSelect = (event) => {
+    const selectedConfigId = event.target.value;
+    const selectedConfig = configurations.find((config) => config._id === selectedConfigId);
+    setSelectedConfiguration(selectedConfig);
   };
 
-  const handleUpload = () => {
-    if (!selectedConfiguration || !selectedFile) {
-      console.error('Please select a configuration and file');
+  const handleFileUpload = (event) => {
+    const uploadedFile = event.target.files[0];
+    setFile(uploadedFile);
+  };
+
+  const handleUpload = async () => {
+    if (!file || !selectedConfiguration) {
       return;
     }
 
     const formData = new FormData();
-    formData.append('file', selectedFile);
-    formData.append('configuration', selectedConfiguration);
+    formData.append('file', file);
+    formData.append('configuration', JSON.stringify(selectedConfiguration));
 
-    axios
-      .post('/api/upload', formData) // Replace with the appropriate API endpoint
-      .then((response) => {
-        console.log('File uploaded and processed:', response.data);
-      })
-      .catch((error) => {
-        console.error('Error uploading file:', error);
-      });
+    try {
+      const response = await axios.post('/api/upload', formData);
+      console.log('File upload successful:', response.data);
+      setUploadMsg({msg: response.data.message, color: "green"})
+      // Perform further processing or handle the server response here
+    } catch (error) {
+      console.log('Error uploading file:', error);
+      setUploadMsg({msg: error.response.data.error, color: "red"})
+    }
   };
 
   return (
     <div>
-      <h2>File Processor</h2>
-      <select value={selectedConfiguration} onChange={handleConfigurationSelect}>
-        <option value="">Select Configuration</option>
-        {configurations.map((configuration) => (
-          <option key={configuration.id} value={configuration.id}>
-            {configuration.name}
-          </option>
-        ))}
-      </select>
-      <br />
-      <input type="file" onChange={handleFileChange} />
-      <br />
+      <h1>File Processor</h1>
+      <div>
+        <h2>Select Configuration:</h2>
+        {configurations && configurations.length > 0 ? (
+          <select onChange={handleConfigurationSelect}>
+            <option value="">Select Configuration</option>
+            {configurations.map((config) => (
+              <option key={config._id} value={config._id}>
+                {config.name}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <p>No configurations found.</p>
+        )}
+      </div>
+      <div>
+        <h2>Upload File:</h2>
+        <input type="file" accept=".xlsx,.xls" onChange={handleFileUpload} />
+      </div>
       <button onClick={handleUpload}>Upload</button>
+      {(uploadMsg) && (
+            <div style={{color: uploadMsg.color, fontWeight: "bolder", marginTop: "1rem"}}>{uploadMsg.msg}</div>
+          )}
     </div>
   );
 };

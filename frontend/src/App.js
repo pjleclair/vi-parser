@@ -7,7 +7,6 @@ import Sidebar from './components/sidebar.js';
 
 import './App.css'
 
-import axios from 'axios';
 var XLSX = require("xlsx");
 
 const App = () => {
@@ -21,7 +20,7 @@ const App = () => {
 
   const renderActiveComponent = () => {
     if (activeComponent === 'parser') {
-      return <Parser onFileUpload={handleFileUpload} jsonData={jsonData} onSaveConfiguration={saveConfiguration} />;
+      return <Parser onFileUpload={handleFileUpload} jsonData={jsonData}/>;
     } else if (activeComponent === 'fileProcessor') {
       return <FileProcessor />;
     }
@@ -43,21 +42,6 @@ const App = () => {
     };
 
     reader.readAsArrayBuffer(file);
-  };
-
-  const saveConfiguration = (name,columnMappings) => {
-    const configuration = {
-      name,
-      columnMappings: {...columnMappings}
-    }
-
-    axios.post('/api/configurations', configuration)
-      .then((response) => {
-        console.log('Configuration saved successfully:', response.data);
-      })
-      .catch((error) => {
-        console.error('Error saving configuration:', error);
-      });
   };
 
   return (
