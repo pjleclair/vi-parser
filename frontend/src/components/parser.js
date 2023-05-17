@@ -45,7 +45,7 @@ const Parser = ({ onFileUpload, jsonData, onSaveConfiguration }) => {
       name,
       columnMappings: {...columnMappings}
     }
-
+    console.log(configuration)
     axios.post('/api/configurations', configuration)
       .then((response) => {
         console.log('Configuration saved successfully:', response.data);

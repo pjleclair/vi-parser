@@ -24,7 +24,7 @@ mongoose
 // Create a Schema for configurations
 const configurationSchema = new mongoose.Schema({
     name: String,
-    columns: mongoose.Schema.Types.Mixed,
+    columnMappings: Object,
   });
 
 // Create a Model for configurations
@@ -39,7 +39,8 @@ app.use(fileUpload())
 // Save configuration endpoint
 app.post('/api/configurations', async (req, res) => {
   try {
-    const { name, columnMappings } = req.body;
+    const name = req.body.name;
+    const columnMappings = req.body.columnMappings;
 
     // Check if the configuration name already exists in the database
     const existingConfiguration = await Configuration.findOne({ name });
@@ -51,7 +52,7 @@ app.post('/api/configurations', async (req, res) => {
     const newConfiguration = new Configuration({ name, columnMappings });
     await newConfiguration.save();
 
-    res.json({ message: 'Configuration saved successfully' });
+    res.json({ message: 'Configuration saved successfully', config: newConfiguration });
   } catch (error) {
     console.log('Error saving configuration:', error);
     res.status(500).json({ error: 'Failed to save configuration' });
@@ -79,8 +80,7 @@ app.post('/api/upload', (req, res) => {
   }
 
   const file = req.files.file;
-  const configuration = req.body.configuration;
-
+  const configuration = JSON.parse(req.body.configuration);
   // Read the uploaded file
   const workbook = XLSX.read(file.data, { type: 'buffer' });
 
@@ -91,15 +91,32 @@ app.post('/api/upload', (req, res) => {
   // Convert the sheet data to JSON
   const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
-  console.log(jsonData); // Log the converted JSON data to the console
+  //console.log(jsonData); // Log the converted JSON data to the console
 
   // Combine the file data with the configuration
-  const result = {
-    fileData: jsonData,
-    configuration: configuration,
-  };
+  const combinedData = jsonData.map((row) => {
+    const combinedRow = {};
 
-  res.json({ data: result, message: "File upload successful"});
+    try {
+      console.log('Row Object:', row);
+      console.log(configuration)
+      Object.entries(configuration.columnMappings).forEach(([index, mappedColumnName]) => {
+        const columnIndex = parseInt(index, 10);
+        const columnName = Object.keys(row)[columnIndex];
+
+        if (columnName !== undefined && row[columnName] !== undefined) {
+          combinedRow[mappedColumnName] = row[columnName];
+        }
+      });
+    } catch (error) {
+      console.error('Error in Row:', row);
+      throw error;
+    }
+
+    return combinedRow;
+  });
+
+  res.json({ data: combinedData, message: "File upload successful"});
 });
 
 
