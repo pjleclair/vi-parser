@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const fileUpload = require('express-fileupload')
-
+const axios = require('axios');
+require('dotenv').config();
 
 const app = express();
 const port = 8080;
@@ -29,6 +30,14 @@ const configurationSchema = new mongoose.Schema({
 
 // Create a Model for configurations
 const Configuration = mongoose.model('Configuration', configurationSchema);
+
+//OpenAI Configuration
+const headers = {
+  'Content-Type': 'application/json',
+  'Authorization': `Bearer ${process.env.API_KEY}`,
+}
+console.log(headers)
+const apiUrl="https://api.openai.com/v1/completions";
 
 // Middleware
 app.use(bodyParser.json());
@@ -98,8 +107,6 @@ app.post('/api/upload', (req, res) => {
     const combinedRow = {};
 
     try {
-      console.log('Row Object:', row);
-      console.log(configuration)
       Object.entries(configuration.columnMappings).forEach(([index, mappedColumnName]) => {
         const columnIndex = parseInt(index, 10);
         const columnName = Object.keys(row)[columnIndex];
@@ -116,7 +123,41 @@ app.post('/api/upload', (req, res) => {
     return combinedRow;
   });
 
-  res.json({ data: combinedData, message: "File upload successful"});
+  //make API call to OpenAI
+  let msgArray = [];
+  const promises = Array.from(combinedData, (obj, index) => {
+    const data={
+      "model": "text-davinci-003",
+      "prompt": `Create a fundraising text message for a democratic political campaign based on environmental values using the following JSON object: ${obj}`,
+      "max_tokens": 240,
+      "temperature": 0
+    }
+  
+    return axios
+    .post(apiUrl, data, { headers })
+    .then((response) => {
+      // Handle the response
+      console.log(response.data.choices[0].text);
+      return response.data.choices[0].text;
+    })
+    .catch((error) => {
+      // Handle errors
+      console.error(error);
+    });
+  });
+  
+  Promise.all(promises)
+  .then((responses) => {
+    msgArray = responses;
+    console.log(msgArray);
+    // Continue with further processing using msgArray
+    res.json({ data: combinedData, message: "File upload successful", gpt: msgArray});
+  })
+  .catch((error) => {
+    // Handle errors in promise.all
+    console.error(error);
+  });
+
 });
 
 
