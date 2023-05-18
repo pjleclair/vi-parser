@@ -39,6 +39,11 @@ const headers = {
 console.log(headers)
 const apiUrl="https://api.openai.com/v1/completions";
 
+//Twilio Configuration
+const accountSid = process.env.ACC_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require("twilio")(accountSid, authToken);
+
 // Middleware
 app.use(bodyParser.json());
 app.use(express.static('build'))
@@ -129,7 +134,7 @@ app.post('/api/upload', (req, res) => {
     console.log(obj)
     const data={
       "model": "text-davinci-003",
-      "prompt": `Create a fundraising text message addressed to ${obj.fullName} for a democratic political campaign named "The World Economic Forum" based on environmental values - be sure to include a shortened hyperlink to donate and address the recipient by first name`,
+      "prompt": `Create a fundraising text message addressed to ${obj.fullName} for a democratic political campaign named "The World Economic Forum" based on environmental values that targets US citizens of ${obj.age} age - be sure to include a shortened hyperlink to donate and address the recipient by first name`,
       "max_tokens": 240,
       "temperature": 0.3
     }
@@ -139,7 +144,7 @@ app.post('/api/upload', (req, res) => {
     .then((response) => {
       // Handle the response
       console.log(response.data.choices[0].text);
-      return String(response.data.choices[0].text);
+      return response.data.choices[0].text;
     })
     .catch((error) => {
       // Handle errors
@@ -152,6 +157,12 @@ app.post('/api/upload', (req, res) => {
     msgArray = responses;
     console.log(msgArray);
     // Continue with further processing using msgArray
+    msgArray.map(msg => {
+      client.messages
+      .create({ body: msg, from: "+18885459281", to: "+12078528823" })
+        .then(message => console.log(message.sid));
+    });
+
     res.json({ data: combinedData, message: "File upload successful", gpt: msgArray});
   })
   .catch((error) => {
