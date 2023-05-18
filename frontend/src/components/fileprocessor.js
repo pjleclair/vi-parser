@@ -6,6 +6,7 @@ const FileProcessor = () => {
   const [configurations, setConfigurations] = useState([]);
   const [selectedConfiguration, setSelectedConfiguration] = useState(null);
   const [uploadMsg, setUploadMsg] = useState({});
+  const [gptArray, setGptArray] = useState([])
 
   useEffect(() => {
     fetchConfigurations();
@@ -52,7 +53,8 @@ const FileProcessor = () => {
     try {
       const response = await axios.post('/api/upload', formData);
       console.log('File upload successful:', response.data);
-      setUploadMsg({msg: response.data.message, color: "green"})
+      setUploadMsg({msg: response.data.message, color: "green"});
+      setGptArray(response.data.gpt);
       // Perform further processing or handle the server response here
     } catch (error) {
       console.log('Error uploading file:', error);
@@ -86,6 +88,19 @@ const FileProcessor = () => {
       {(uploadMsg) && (
             <div style={{color: uploadMsg.color, fontWeight: "bolder", marginTop: "1rem"}}>{uploadMsg.msg}</div>
           )}
+      <br/>
+      <h1>Sample output:</h1>
+      {(gptArray) && (
+        gptArray.map((message,i) => {
+          return <p key={i} style={{
+            fontWeight:"bold",
+            fontSize:"1.25rem",
+            whiteSpace:"pre-wrap",
+            border:"1px solid black",
+            padding:"1rem"
+          }} dangerouslySetInnerHTML={{__html: message.trim()}}></p>
+        })
+      )}
     </div>
   );
 };

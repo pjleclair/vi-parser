@@ -126,11 +126,12 @@ app.post('/api/upload', (req, res) => {
   //make API call to OpenAI
   let msgArray = [];
   const promises = Array.from(combinedData, (obj, index) => {
+    console.log(obj)
     const data={
       "model": "text-davinci-003",
-      "prompt": `Create a fundraising text message for a democratic political campaign based on environmental values using the following JSON object: ${obj}`,
+      "prompt": `Create a fundraising text message addressed to ${obj.fullName} for a democratic political campaign named "The World Economic Forum" based on environmental values - be sure to include a shortened hyperlink to donate and address the recipient by first name`,
       "max_tokens": 240,
-      "temperature": 0
+      "temperature": 0.3
     }
   
     return axios
@@ -138,7 +139,7 @@ app.post('/api/upload', (req, res) => {
     .then((response) => {
       // Handle the response
       console.log(response.data.choices[0].text);
-      return response.data.choices[0].text;
+      return String(response.data.choices[0].text);
     })
     .catch((error) => {
       // Handle errors
