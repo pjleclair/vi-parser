@@ -7,6 +7,10 @@ const FileProcessor = () => {
   const [selectedConfiguration, setSelectedConfiguration] = useState(null);
   const [uploadMsg, setUploadMsg] = useState({});
   const [gptArray, setGptArray] = useState([])
+  const [orgName, setOrgName] = useState("")
+  const [campaignDesc, setCampaignDesc] = useState("")
+  const [narrative, setNarrative] = useState("")
+  const [donateLink, setDonateLink] = useState("")
 
   useEffect(() => {
     fetchConfigurations();
@@ -49,6 +53,10 @@ const FileProcessor = () => {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('configuration', JSON.stringify(selectedConfiguration));
+    formData.append('campaignDesc', campaignDesc);
+    formData.append('orgName', orgName);
+    formData.append('narrative', narrative);
+    formData.append('donateLink', donateLink);
 
     try {
       const response = await axios.post('/api/upload', formData);
@@ -61,6 +69,22 @@ const FileProcessor = () => {
       setUploadMsg({msg: error.response.data.error, color: "red"})
     }
   };
+
+  const handleCampaignDescChange = (e) => {
+    setCampaignDesc(e.target.value)
+  }
+
+  const handleOrgNameChange = (e) => {
+    setOrgName(e.target.value)
+  }
+  
+  const handleNarrativeChange = (e) => {
+    setNarrative(e.target.value)
+  }
+
+  const handleDonateLinkChange = (e) => {
+    setDonateLink(e.target.value)
+  }
 
   return (
     <div>
@@ -79,6 +103,14 @@ const FileProcessor = () => {
         ) : (
           <p>No configurations found.</p>
         )}
+        <h2>Campaign description:</h2>
+        <input onChange={handleCampaignDescChange} value={campaignDesc} placeholder='ex: democratic political campaign'></input>
+        <h2>Organization name:</h2>
+        <input onChange={handleOrgNameChange} value={orgName} placeholder='ex: World Economic Forum'></input>
+        <h2>Narrative:</h2>
+        <input onChange={handleNarrativeChange} value={narrative} placeholder='ex: environmental values'></input>
+        <h2>Donate Link:</h2>
+        <input onChange={handleDonateLinkChange} value={donateLink} placeholder='ex: https://bit.ly/ShJ67w'></input>
       </div>
       <div>
         <h2>Upload File:</h2>

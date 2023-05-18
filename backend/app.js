@@ -95,6 +95,10 @@ app.post('/api/upload', (req, res) => {
 
   const file = req.files.file;
   const configuration = JSON.parse(req.body.configuration);
+  const campaignDesc = req.body.campaignDesc;
+  const orgName = req.body.orgName;
+  const narrative = req.body.narrative;
+  const donateLink = req.body.donateLink;
   // Read the uploaded file
   const workbook = XLSX.read(file.data, { type: 'buffer' });
 
@@ -134,7 +138,7 @@ app.post('/api/upload', (req, res) => {
     console.log(obj)
     const data={
       "model": "text-davinci-003",
-      "prompt": `Create a fundraising text message addressed to ${obj.fullName} for a democratic political campaign named "The World Economic Forum" based on environmental values that targets US citizens of ${obj.age} age - be sure to include a shortened hyperlink to donate and address the recipient by first name`,
+      "prompt": `Create a fundraising text message addressed to ${obj.fullName} for a ${campaignDesc} named "${orgName}" based on ${narrative} that targets US citizens of ${obj.age} age - be sure to include a shortened hyperlink to donate at ${donateLink} and address the recipient by first name`,
       "max_tokens": 240,
       "temperature": 0.3
     }
