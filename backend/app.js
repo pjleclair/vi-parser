@@ -157,9 +157,10 @@ app.post('/api/upload', (req, res) => {
     msgArray = responses;
     console.log(msgArray);
     // Continue with further processing using msgArray
-    msgArray.map(msg => {
+    msgArray.map((msg, index) => {
+      const num = combinedData[index].phoneNumber.replace(/-/g,'');
       client.messages
-      .create({ body: msg, from: "+18885459281", to: "+12078528823" })
+      .create({ body: msg, from: "+18885459281", to: `+1${num}` })
         .then(message => console.log(message.sid));
     });
 
