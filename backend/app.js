@@ -173,6 +173,7 @@ app.post('/api/upload', (req, res) => {
   .then((msgArray) => {
     // Iterate through the array of GPT-tailored messages
     msgArray.map((msg, index) => {
+      const name = combinedData[index].fullName;
       if(deliveryMethod === 'email')
         {
           const email = combinedData[index].emailAddress;
@@ -190,8 +191,8 @@ app.post('/api/upload', (req, res) => {
                     },
                     To: [
                       {
-                        Email: "pleclair@protonmail.com",
-                        Name: "Phillip LeClair"
+                        Email: email,
+                        Name: name
                       }
                     ],
                     Subject: "HELLO WORLD",
@@ -215,7 +216,7 @@ app.post('/api/upload', (req, res) => {
           console.log('no number! delivery aborted')
         } else {
           client.messages
-          .create({ body: msg, from: "+18885459281", to: `+12078528823` })
+          .create({ body: msg, from: "+18885459281", to: `+1${num}` })
           .then(message => console.log(message.sid));
         }
       }
