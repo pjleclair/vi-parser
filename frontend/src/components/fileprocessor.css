@@ -1,8 +1,10 @@
 .config-container {
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
     grid-template-columns: 1fr 1fr;
     width: 50%;
+    margin-top: 2rem;
+    margin-bottom: 3rem;
 }
 
 .no-configs {
@@ -11,6 +13,18 @@
 
 .upload-button {
     margin-top: 1rem;
+}
+
+input#email,input#text {
+    width: 2rem;
+    box-shadow: none;
+    text-align: center;
+}
+
+#radio {
+    display: flex;
+    align-items: center;
+    font-size: larger;
 }
 
 input {

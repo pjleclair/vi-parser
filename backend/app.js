@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const fileUpload = require('express-fileupload')
 const axios = require('axios');
+const Mailjet = require('node-mailjet');
 require('dotenv').config();
 
 const app = express();
@@ -43,6 +44,16 @@ const apiUrl="https://api.openai.com/v1/completions";
 const accountSid = process.env.ACC_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require("twilio")(accountSid, authToken);
+
+//Mailjet Configuration
+const mailjet = Mailjet.apiConnect(
+  process.env.MJ_API_PUB_KEY || 'your-api-key',
+  process.env.MJ_API_PRIV_KEY || 'your-api-secret',
+  {
+    config: {},
+    options: {}
+  }
+);
 
 // Middleware
 app.use(bodyParser.json());
@@ -99,6 +110,8 @@ app.post('/api/upload', (req, res) => {
   const orgName = req.body.orgName;
   const narrative = req.body.narrative;
   const donateLink = req.body.donateLink;
+  const deliveryMethod = req.body.deliveryMethod;
+  
   // Read the uploaded file
   const workbook = XLSX.read(file.data, { type: 'buffer' });
 
@@ -138,9 +151,9 @@ app.post('/api/upload', (req, res) => {
     console.log(obj)
     const data={
       "model": "text-davinci-003",
-      "prompt": `Create a fundraising text message addressed to ${obj.fullName} for a ${campaignDesc} named "${orgName}" based on ${narrative} that targets US citizens of age ${obj.age} that are members of the ${obj.party} political party - be sure to include a shortened hyperlink to donate at ${donateLink} and address the recipient by first name`,
+      "prompt": `Create a fundraising text message addressed to ${obj.fullName} for a ${campaignDesc} campaign named "${orgName}" based on ${narrative} that targets US citizens of age ${obj.age} that are members of the ${obj.party} political party - be sure to include a shortened hyperlink to donate at ${donateLink} and address the recipient by first name, but do not explicitly mention age or political party, just use those parameters to tailor your content.`,
       "max_tokens": 240,
-      "temperature": 0.3
+      "temperature": 0.5
     }
   
     return axios
@@ -157,15 +170,55 @@ app.post('/api/upload', (req, res) => {
   });
   
   Promise.all(promises)
-  .then((responses) => {
-    msgArray = responses;
-    console.log(msgArray);
-    // Continue with further processing using msgArray
+  .then((msgArray) => {
+    // Iterate through the array of GPT-tailored messages
     msgArray.map((msg, index) => {
-      const num = combinedData[index].phoneNumber.replace(/-/g,'');
-      client.messages
-      .create({ body: msg, from: "+18885459281", to: `+1${num}` })
-        .then(message => console.log(message.sid));
+      if(deliveryMethod === 'email')
+        {
+          const email = combinedData[index].emailAddress;
+          if(email === undefined) {
+            console.log('no email! delivery aborted')
+          } else {
+            const request = mailjet
+              .post('send', { version: 'v3.1' })
+              .request({
+                Messages: [
+                  {
+                    From: {
+                      Email: "pleclair@protonmail.com",
+                      Name: "Phillip LeClair"
+                    },
+                    To: [
+                      {
+                        Email: "pleclair@protonmail.com",
+                        Name: "Phillip LeClair"
+                      }
+                    ],
+                    Subject: "HELLO WORLD",
+                    TextPart: "Dear Chum, welcome to Mailjet! May the delivery force be with you!",
+                    HTMLPart: "<h3>Dear passenger 1, welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3><br />May the delivery force be with you!"
+                  }
+                ]
+              })
+
+          request
+          .then((result) => {
+              console.log(result.body)
+          })
+          .catch((err) => {
+              console.log(err.statusCode)
+          })
+        }
+      } else if (deliveryMethod === 'text') {
+        const num = combinedData[index].phoneNumber.replace(/-/g,'');
+        if(num === undefined) {
+          console.log('no number! delivery aborted')
+        } else {
+          client.messages
+          .create({ body: msg, from: "+18885459281", to: `+12078528823` })
+          .then(message => console.log(message.sid));
+        }
+      }
     });
 
     res.json({ data: combinedData, message: "File upload successful", gpt: msgArray});
@@ -174,6 +227,8 @@ app.post('/api/upload', (req, res) => {
     // Handle errors in promise.all
     console.error(error);
   });
+
+
 
 });
 

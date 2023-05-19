@@ -12,6 +12,7 @@ const FileProcessor = () => {
   const [campaignDesc, setCampaignDesc] = useState("")
   const [narrative, setNarrative] = useState("")
   const [donateLink, setDonateLink] = useState("")
+  const [deliveryMethod, setDeliveryMethod] = useState("email")
 
   useEffect(() => {
     fetchConfigurations();
@@ -58,6 +59,7 @@ const FileProcessor = () => {
     formData.append('orgName', orgName);
     formData.append('narrative', narrative);
     formData.append('donateLink', donateLink);
+    formData.append('deliveryMethod', deliveryMethod);
 
     try {
       const response = await axios.post('/api/upload', formData);
@@ -85,6 +87,11 @@ const FileProcessor = () => {
 
   const handleDonateLinkChange = (e) => {
     setDonateLink(e.target.value)
+  }
+
+  const handleDeliveryMethodChange = (e) => {
+    console.log(e.target.value)
+    setDeliveryMethod(e.target.value)
   }
 
   return (
@@ -123,8 +130,18 @@ const FileProcessor = () => {
       </div>
       <div>
         <h2>Upload File:</h2>
-        <input type="file" accept=".xlsx,.xls" onChange={handleFileUpload} />
+        <input id='file' type="file" accept=".xlsx,.xls" onChange={handleFileUpload} />
+        <h2>Delivery Method:</h2>
+        <div id='radio'>
+          <input name='deliveryMethod' type="radio" onChange={handleDeliveryMethodChange} id='text' checked={deliveryMethod === 'text'} value='text'/>
+          <label>Text</label>
+        </div>
+        <div id='radio'>
+          <input name='deliveryMethod' type="radio" onChange={handleDeliveryMethodChange} id='email' checked={deliveryMethod === 'email'} value='email'/>
+          <label>Email</label>
+        </div>
       </div>
+      <br />
       <button className='upload-button' onClick={handleUpload}>Upload</button>
       {(uploadMsg) && (
             <div style={{color: uploadMsg.color, fontWeight: "bolder", marginTop: "1rem"}}>{uploadMsg.msg}</div>
