@@ -138,7 +138,7 @@ app.post('/api/upload', (req, res) => {
     console.log(obj)
     const data={
       "model": "text-davinci-003",
-      "prompt": `Create a fundraising text message addressed to ${obj.fullName} for a ${campaignDesc} named "${orgName}" based on ${narrative} that targets US citizens of ${obj.age} age - be sure to include a shortened hyperlink to donate at ${donateLink} and address the recipient by first name`,
+      "prompt": `Create a fundraising text message addressed to ${obj.fullName} for a ${campaignDesc} named "${orgName}" based on ${narrative} that targets US citizens of age ${obj.age} that are members of the ${obj.party} political party - be sure to include a shortened hyperlink to donate at ${donateLink} and address the recipient by first name`,
       "max_tokens": 240,
       "temperature": 0.3
     }
@@ -152,7 +152,7 @@ app.post('/api/upload', (req, res) => {
     })
     .catch((error) => {
       // Handle errors
-      console.error(error);
+      return error;
     });
   });
   

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './fileprocessor.css'
 
 const FileProcessor = () => {
   const [file, setFile] = useState(null);
   const [configurations, setConfigurations] = useState([]);
   const [selectedConfiguration, setSelectedConfiguration] = useState(null);
-  const [uploadMsg, setUploadMsg] = useState({});
+  const [uploadMsg, setUploadMsg] = useState("");
   const [gptArray, setGptArray] = useState([])
   const [orgName, setOrgName] = useState("")
   const [campaignDesc, setCampaignDesc] = useState("")
@@ -89,8 +90,7 @@ const FileProcessor = () => {
   return (
     <div>
       <h1>File Processor</h1>
-      <div>
-        <h2>Select Configuration:</h2>
+      <h2>Select Configuration:</h2>
         {configurations && configurations.length > 0 ? (
           <select onChange={handleConfigurationSelect}>
             <option value="">Select Configuration</option>
@@ -101,37 +101,43 @@ const FileProcessor = () => {
             ))}
           </select>
         ) : (
-          <p>No configurations found.</p>
+          <p className='no-configs'>No configurations found.</p>
         )}
-        <h2>Campaign description:</h2>
-        <input onChange={handleCampaignDescChange} value={campaignDesc} placeholder='ex: democratic political campaign'></input>
-        <h2>Organization name:</h2>
-        <input onChange={handleOrgNameChange} value={orgName} placeholder='ex: World Economic Forum'></input>
-        <h2>Narrative:</h2>
-        <input onChange={handleNarrativeChange} value={narrative} placeholder='ex: environmental values'></input>
-        <h2>Donate Link:</h2>
-        <input onChange={handleDonateLinkChange} value={donateLink} placeholder='ex: https://bit.ly/ShJ67w'></input>
+      <div className='config-container'>
+        <div>
+          <h2>Campaign description:</h2>
+          <input onChange={handleCampaignDescChange} value={campaignDesc} placeholder='ex: democratic political campaign'></input>
+        </div>
+        <div>
+          <h2>Organization name:</h2>
+          <input onChange={handleOrgNameChange} value={orgName} placeholder='ex: World Economic Forum'></input>
+        </div>
+        <div>
+          <h2>Narrative:</h2>
+          <input onChange={handleNarrativeChange} value={narrative} placeholder='ex: environmental values'></input>
+        </div>
+        <div>
+          <h2>Donate Link:</h2>
+          <input onChange={handleDonateLinkChange} value={donateLink} placeholder='ex: https://bit.ly/ShJ67w'></input>
+        </div>
       </div>
       <div>
         <h2>Upload File:</h2>
         <input type="file" accept=".xlsx,.xls" onChange={handleFileUpload} />
       </div>
-      <button onClick={handleUpload}>Upload</button>
+      <button className='upload-button' onClick={handleUpload}>Upload</button>
       {(uploadMsg) && (
             <div style={{color: uploadMsg.color, fontWeight: "bolder", marginTop: "1rem"}}>{uploadMsg.msg}</div>
           )}
       <br/>
-      <h1>Sample output:</h1>
-      {(gptArray) && (
-        gptArray.map((message,i) => {
-          return <p key={i} style={{
-            fontWeight:"bold",
-            fontSize:"1.25rem",
-            whiteSpace:"pre-wrap",
-            border:"1px solid black",
-            padding:"1rem"
-          }} dangerouslySetInnerHTML={{__html: message.trim()}}></p>
-        })
+      {((gptArray)&&(gptArray.length > 0)) && (
+        <div>
+          <h1>Sample output:</h1>
+            {gptArray.map((message,i) => {
+            return <p key={i}
+             dangerouslySetInnerHTML={{__html: message.trim()}}></p>
+          })}
+        </div>
       )}
     </div>
   );

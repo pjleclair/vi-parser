@@ -1,11 +1,12 @@
 .sidebar {
     width: 4rem;
     height: 100vh;
-    background-color: #f0f0f0;
+    background-color: #383E47;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: .5rem;
+    border-radius: .5rem;
   }
   
   .sidebar h2 {
@@ -28,9 +29,12 @@
     border: none;
     background-color: transparent;
     cursor: pointer;
+    color: #FFFFFF;
   }
   
   .sidebar button:hover {
-    background-color: #ddd;
+    border: 1px solid;
+    border-color: #ddd;
+    background-color: transparent;
   }
   

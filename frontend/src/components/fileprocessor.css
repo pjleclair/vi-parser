@@ -1,0 +1,66 @@
+.config-container {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    width: 50%;
+}
+
+.no-configs {
+    width: 15rem;
+}
+
+.upload-button {
+    margin-top: 1rem;
+}
+
+input {
+    width: 15rem;
+    padding: 5px 12px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #24292e;
+    vertical-align: middle;
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    outline: none;
+    box-shadow: rgba(225, 228, 232, 0.2) 0px 1px 0px 0px inset;    
+}
+input:focus {
+    border-color: #0366d6;
+    outline: none;
+    box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
+}
+
+button {
+
+    display: inline-block;
+    outline: 0;
+    cursor: pointer;
+    text-align: center;
+    border: 1px solid #babfc3;
+    padding: 7px 16px;
+    min-height: 36px;
+    min-width: 36px;
+    color: #202223;
+    background: #ffffff;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 14px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 0px 0px;
+}
+button:hover {
+    background: #f6f6f7;
+    outline: 1px solid transparent;
+}
+
+p {
+    font-weight: bold;
+    font-size: 1.25rem;
+    white-space: pre-wrap;
+    border: 1px solid #FFFFFF;
+    border-radius: .5rem;
+    padding: 1rem;
+}
