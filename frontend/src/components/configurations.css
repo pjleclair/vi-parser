@@ -1,7 +1,5 @@
-@media (max-width: 600px) {
-    .configurations {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-    }
+.configurations {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }

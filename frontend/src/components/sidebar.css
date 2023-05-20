@@ -21,6 +21,7 @@
   
   .sidebar li {
     margin-bottom: 1rem;
+    max-width: 100%;
   }
   
   .sidebar button {

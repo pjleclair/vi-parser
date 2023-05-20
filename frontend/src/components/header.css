@@ -1,11 +1,4 @@
 .header {
-    padding-left: 1rem;
-}
-
-@media (max-width: 600px) {
-    .header {
-        display: flex;
-        justify-content: center;
-        padding-left: 0;
-    }
+    display: flex;
+    justify-content: center;
 }

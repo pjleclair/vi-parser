@@ -8,6 +8,15 @@ body {
   
   .app {
     display: flex;
+
+    /* disable scrollbar visual */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  /* disable scrollbar visual chrome, safari, opera */
+  .app::-webkit-scrollbar {
+    display: none;
   }
   
   .content {
