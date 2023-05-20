@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import Header from './components/header';
-import Parser from './components/parser';
+import Configurations from './components/configurations.js';
 import FileProcessor from './components/fileprocessor.js';
 import Sidebar from './components/sidebar.js';
 
@@ -12,15 +12,15 @@ var XLSX = require("xlsx");
 const App = () => {
   const [jsonData, setJsonData] = useState(null);
 
-  const [activeComponent, setActiveComponent] = useState('parser');
+  const [activeComponent, setActiveComponent] = useState('configurations');
 
   const toggleComponent = (component) => {
     setActiveComponent(component);
   };
 
   const renderActiveComponent = () => {
-    if (activeComponent === 'parser') {
-      return <Parser onFileUpload={handleFileUpload} jsonData={jsonData}/>;
+    if (activeComponent === 'configurations') {
+      return <Configurations onFileUpload={handleFileUpload} jsonData={jsonData}/>;
     } else if (activeComponent === 'fileProcessor') {
       return <FileProcessor />;
     }

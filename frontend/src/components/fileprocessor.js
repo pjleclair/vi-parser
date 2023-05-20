@@ -64,12 +64,12 @@ const FileProcessor = () => {
     try {
       const response = await axios.post('/api/upload', formData);
       console.log('File upload successful:', response.data);
-      setUploadMsg({msg: response.data.message, color: "green"});
+      setUploadMsg({msg: response.data.message, color: '#BB86FC'});
       setGptArray(response.data.gpt);
       // Perform further processing or handle the server response here
     } catch (error) {
       console.log('Error uploading file:', error);
-      setUploadMsg({msg: error.response.data.error, color: "red"})
+      setUploadMsg({msg: error.response.data.error, color: "CF6679"})
     }
   };
 
@@ -95,50 +95,58 @@ const FileProcessor = () => {
   }
 
   return (
-    <div>
-      <h1>File Processor</h1>
-      <h2>Select Configuration:</h2>
+    <div className='processor-container'>
+      <h1 style={{color: "#03DAC5"}}>File Processor</h1>
+      <h2 style={{color: "#BB86FC"}}>Select Configuration:</h2>
         {configurations && configurations.length > 0 ? (
-          <select onChange={handleConfigurationSelect}>
-            <option value="">Select Configuration</option>
-            {configurations.map((config) => (
-              <option key={config._id} value={config._id}>
-                {config.name}
-              </option>
-            ))}
-          </select>
+          <div className='select'>
+            <select onChange={handleConfigurationSelect}>
+              <option value="">Select Configuration</option>
+              {configurations.map((config) => (
+                <option key={config._id} value={config._id}>
+                  {config.name}
+                </option>
+              ))}
+            </select>
+            <span className='focus'></span>
+          </div>
         ) : (
           <p className='no-configs'>No configurations found.</p>
         )}
+      <h2 style={{color: "#BB86FC",marginTop:'3rem'}}>GPT Details:</h2>
       <div className='config-container'>
         <div>
-          <h2>Campaign description:</h2>
+          <h3>Campaign description:</h3>
           <input onChange={handleCampaignDescChange} value={campaignDesc} placeholder='ex: democratic political campaign'></input>
         </div>
         <div>
-          <h2>Organization name:</h2>
+          <h3>Organization name:</h3>
           <input onChange={handleOrgNameChange} value={orgName} placeholder='ex: World Economic Forum'></input>
         </div>
         <div>
-          <h2>Narrative:</h2>
+          <h3>Narrative:</h3>
           <input onChange={handleNarrativeChange} value={narrative} placeholder='ex: environmental values'></input>
         </div>
         <div>
-          <h2>Donate Link:</h2>
+          <h3>Donate Link:</h3>
           <input onChange={handleDonateLinkChange} value={donateLink} placeholder='ex: https://bit.ly/ShJ67w'></input>
         </div>
       </div>
-      <div>
-        <h2>Upload File:</h2>
-        <input id='file' type="file" accept=".xlsx,.xls" onChange={handleFileUpload} />
-        <h2>Delivery Method:</h2>
-        <div id='radio'>
-          <input name='deliveryMethod' type="radio" onChange={handleDeliveryMethodChange} id='text' checked={deliveryMethod === 'text'} value='text'/>
-          <label>Text</label>
+      <div className='upload-container'>
+        <div className='file-container'>
+          <h2 style={{color: "#BB86FC"}}>Upload File:</h2>
+          <input id='file' type="file" accept=".xlsx,.xls" onChange={handleFileUpload} />
         </div>
-        <div id='radio'>
-          <input name='deliveryMethod' type="radio" onChange={handleDeliveryMethodChange} id='email' checked={deliveryMethod === 'email'} value='email'/>
-          <label>Email</label>
+        <div>
+          <h2 style={{color: "#BB86FC"}}>Delivery Method:</h2>
+          <div id='radio'>
+            <input name='deliveryMethod' type="radio" onChange={handleDeliveryMethodChange} id='text' checked={deliveryMethod === 'text'} value='text'/>
+            <label>Text</label>
+          </div>
+          <div id='radio'>
+            <input name='deliveryMethod' type="radio" onChange={handleDeliveryMethodChange} id='email' checked={deliveryMethod === 'email'} value='email'/>
+            <label>Email</label>
+          </div>
         </div>
       </div>
       <br />

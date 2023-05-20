@@ -84,6 +84,49 @@ app.post('/api/configurations', async (req, res) => {
   }
 });
 
+app.put('/api/configurations', async (req, res) => {
+  try {
+    let name = req.body.name;
+    let columnMappings = req.body.columnMappings;
+    console.log(columnMappings)
+    const id = req.body.id;
+    console.log(id)
+
+    // Update the configuration
+    if (name === '')
+      name = Configuration.findById(id).name;
+    if (Object.keys(columnMappings).length === 0)
+      columnMappings = Configuration.findById(id).columnMappings;
+    Configuration.findByIdAndUpdate(id,{name: name, columnMappings: columnMappings})
+    .then(config => {
+      res.json({ message: 'Configuration updated successfully', config: config });
+    })
+    .catch(error => {
+      res.status(500).json({error: 'Failed to update configuration'})
+    })
+  } catch (error) {
+    console.log('Error updating configuration:', error);
+    res.status(500).json({ error: 'Failed to update configuration' });
+  }
+});
+
+app.delete('/api/configurations/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    console.log(id)
+    Configuration.findByIdAndDelete(id)
+    .then(config => {
+      res.json({ message: 'Configuration deleted successfully:', config: config });
+    })
+    .catch(error => {
+      res.status(500).json({error: 'Failed to delete configuration'})
+    })
+  } catch (error) {
+    console.log('Error deleting configuration:', error);
+    res.status(500).json({ error: 'Failed to delete configuration' });
+  }
+})
+
 
 // Fetch configurations endpoint
 app.get('/api/configurations', (req, res) => {
