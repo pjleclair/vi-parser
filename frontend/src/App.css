@@ -4,33 +4,32 @@ body {
     color: #FFFFFF;
     background-color: #121212;
     font-family: 'Roboto', sans-serif;
-  }
+}
   
-  .app {
-    display: flex;
+.app {
+  display: flex;
+}
 
-    /* disable scrollbar visual */
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-  }
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 1rem;
+  height: 100vh;
+}
 
-  /* disable scrollbar visual chrome, safari, opera */
-  .app::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .content {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    padding: 1rem;
-    height: 100vh;
-  }
-  
-  .main {
-    flex: 1;
-    padding: 1rem;
-    overflow-y: scroll;
-  }
+.main {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: scroll;
+  /* disable scrollbar visual */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* disable scrollbar visual chrome, safari, opera */
+.main::-webkit-scrollbar {
+  display: none;
+}
   
   

@@ -1,9 +1,13 @@
 .processor-container {
-    width: 60rem;
+    /* width: 60rem; */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+}
+
+.processor-container::-webkit-scrollbar {
+    display: none;
 }
 
 .config-container {

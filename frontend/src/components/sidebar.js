@@ -10,7 +10,7 @@ const Sidebar = ({ toggleComponent }) => {
           <button onClick={() => toggleComponent('configurations')}>Config</button>
         </li>
         <li>
-          <button onClick={() => toggleComponent('fileProcessor')}>Processor</button>
+          <button onClick={() => toggleComponent('fileProcessor')}>Process</button>
         </li>
       </ul>
     </div>

@@ -17,11 +17,13 @@
     list-style-type: none;
     padding: 0;
     margin: 0;
+    width: 100%;
   }
   
   .sidebar li {
     margin-bottom: 1rem;
-    max-width: 100%;
+    width: 100%;
+    max-width: 5rem;
   }
   
   .sidebar button {
@@ -31,6 +33,9 @@
     background-color: transparent;
     cursor: pointer;
     color: #FFFFFF;
+
+    display: flex;
+    justify-content: center;
   }
   
   .sidebar button:hover {
