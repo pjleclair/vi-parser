@@ -3,3 +3,36 @@
     align-items: center;
     flex-direction: column;
 }
+
+.config-update-container {
+    display: flex;
+}
+
+.column-mapping {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+#delete {
+    background-color: #CF6679;
+    margin-left: 1rem;
+    width: 5rem;
+}
+
+#update {
+    background-color: #03DAC5;
+    width: fit-content;
+}
+
+@media (max-width: 600px) {
+    .config-update-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #delete {
+        margin-top: 1rem;
+    }
+}
