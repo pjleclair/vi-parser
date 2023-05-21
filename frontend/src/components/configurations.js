@@ -44,7 +44,7 @@ const Configurations = ({ onFileUpload, jsonData, onSaveConfiguration }) => {
   },[])
 
   const fetchConfigurations = () => {
-    axios.get('/api/configurations')
+    axios.get('/api/configurations/')
     .then((response) => {
       setConfigurations(response.data)
     })
@@ -80,7 +80,7 @@ const Configurations = ({ onFileUpload, jsonData, onSaveConfiguration }) => {
       columnMappings: {...columnMappings}
     }
     console.log(configuration)
-    axios.post('/api/configurations', configuration)
+    axios.post('/api/configurations/', configuration)
       .then((response) => {
         console.log('Configuration saved successfully:', response.data);
         setUploadMsg({msg: response.data.message, color: "#BB86FC"});
@@ -98,7 +98,7 @@ const Configurations = ({ onFileUpload, jsonData, onSaveConfiguration }) => {
       columnMappings: {...columnMappings}
     }
     console.log(configuration)
-    axios.put('/api/configurations', configuration)
+    axios.put('/api/configurations/', configuration)
       .then((response) => {
         console.log('Configuration updated successfully:', response.data);
         setUpdateMsg({msg: response.data.message, color: "#BB86FC"});

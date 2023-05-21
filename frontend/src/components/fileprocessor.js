@@ -27,7 +27,7 @@ const FileProcessor = () => {
   },[uploadMsg])
 
   const fetchConfigurations = () => {
-      axios.get('/api/configurations')
+      axios.get('/api/configurations/')
       .then((response) => {
         setConfigurations(response.data)
       })
@@ -62,7 +62,7 @@ const FileProcessor = () => {
     formData.append('deliveryMethod', deliveryMethod);
 
     try {
-      const response = await axios.post('/api/upload', formData);
+      const response = await axios.post('/api/upload/', formData);
       console.log('File upload successful:', response.data);
       setUploadMsg({msg: response.data.message, color: '#BB86FC'});
       setGptArray(response.data.gpt);
@@ -152,7 +152,7 @@ const FileProcessor = () => {
       <br />
       <button className='upload-button' onClick={handleUpload}>Upload</button>
       {(uploadMsg) && (
-            <div style={{color: uploadMsg.color, fontWeight: "bolder", marginTop: "1rem"}}>{uploadMsg.msg}</div>
+            <h2 style={{color: uploadMsg.color, fontWeight: "bolder", marginTop: "1rem"}}>{uploadMsg.msg}</h2>
           )}
       <br/>
       {((gptArray)&&(gptArray.length > 0)) && (
