@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './fileprocessor.css'
 
-const FileProcessor = () => {
+const FileProcessor = ({token}) => {
   const [file, setFile] = useState(null);
   const [configurations, setConfigurations] = useState([]);
   const [selectedConfiguration, setSelectedConfiguration] = useState(null);
@@ -61,8 +61,14 @@ const FileProcessor = () => {
     formData.append('donateLink', donateLink);
     formData.append('deliveryMethod', deliveryMethod);
 
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    }
+
     try {
-      const response = await axios.post('/api/upload/', formData);
+      const response = await axios.post('/api/upload/', formData, config);
       console.log('File upload successful:', response.data);
       setUploadMsg({msg: response.data.message, color: '#BB86FC'});
       setGptArray(response.data.gpt);

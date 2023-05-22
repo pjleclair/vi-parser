@@ -13,8 +13,12 @@ const tokenExtractor = (req,res,next) => {
 
 //Fetch user helper
 const userExtractor = async (req,res,next) => {
-  const decodedToken = jwt.verify(req.token, process.env.SECRET)
-  req.user = await User.findById(decodedToken.id)
+  try {
+    const decodedToken = jwt.verify(req.token, process.env.SECRET)
+    req.user = await User.findById(decodedToken.id)
+  } catch (error) {
+    console.log('Error:', error)
+  }
   next()
 }
 

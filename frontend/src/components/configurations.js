@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './configurations.css'; // Assuming you have a corresponding CSS file for styling
 
-const Configurations = ({ onFileUpload, jsonData, onSaveConfiguration }) => {
+const Configurations = ({ onFileUpload, jsonData, onSaveConfiguration, token }) => {
   const [columnMappings, setColumnMappings] = useState({});
   const [sampleData, setSampleData] = useState([]);
   const [name, setName] = useState('');
@@ -79,15 +79,20 @@ const Configurations = ({ onFileUpload, jsonData, onSaveConfiguration }) => {
       name,
       columnMappings: {...columnMappings}
     }
-    console.log(configuration)
-    axios.post('/api/configurations/', configuration)
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    }
+    console.log(config,token)
+    axios.post('/api/configurations/', configuration, config)
       .then((response) => {
         console.log('Configuration saved successfully:', response.data);
         setUploadMsg({msg: response.data.message, color: "#BB86FC"});
       })
       .catch((error) => {
         console.error('Error saving configuration:', error);
-        setUploadMsg({msg: error.response.data.error, color: "red"});
+        setUploadMsg({msg: error.response.data.error, color: "#CF6679"});
       });
   };
 
@@ -97,8 +102,12 @@ const Configurations = ({ onFileUpload, jsonData, onSaveConfiguration }) => {
       id,
       columnMappings: {...columnMappings}
     }
-    console.log(configuration)
-    axios.put('/api/configurations/', configuration)
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    }
+    axios.put('/api/configurations/', configuration, config)
       .then((response) => {
         console.log('Configuration updated successfully:', response.data);
         setUpdateMsg({msg: response.data.message, color: "#BB86FC"});
@@ -113,12 +122,17 @@ const Configurations = ({ onFileUpload, jsonData, onSaveConfiguration }) => {
     const idObj = {
       id
     }
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    }
     console.log(idObj)
     if (window.confirm("Are you sure you want to delete this configuration?"))
     {
-      axios.delete(`/api/configurations/${id}`)
+      axios.delete(`/api/configurations/${id}`,config)
         .then((response) => {
-          console.log('Configuration deleted succesfully:', response.data);
+          console.log('Configuration deleted succesfully');
           setUpdateMsg({msg: response.data.message, color: "#BB86FC"});
         })
         .catch((error) => {

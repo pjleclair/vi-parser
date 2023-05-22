@@ -3,6 +3,7 @@ const uploadRouter = require('express').Router();
 const axios = require('axios');
 const XLSX = require('xlsx');
 const Mailjet = require('node-mailjet');
+const jwt = require('jsonwebtoken')
 
 //OpenAI Configuration
 const headers = {
@@ -29,6 +30,10 @@ const mailjet = Mailjet.apiConnect(
 uploadRouter.post('/', (req, res) => {
     if (!req.files || !req.files.file || !req.body.configuration) {
         return res.status(400).json({ error: 'Invalid request' });
+    }
+    const decodedToken = jwt.verify(req.token, process.env.SECRET)
+    if (!decodedToken.id) {
+        res.status(401).json({ error: 'token invalid' })
     }
 
     const file = req.files.file;

@@ -5,14 +5,21 @@ import Configurations from './components/configurations.js';
 import FileProcessor from './components/fileprocessor.js';
 import Sidebar from './components/sidebar.js';
 
+import loginService from './services/loginService';
+
 import './App.css'
 
 var XLSX = require("xlsx");
 
 const App = () => {
   const [jsonData, setJsonData] = useState(null);
-
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeComponent, setActiveComponent] = useState('configurations');
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('')
 
   const toggleComponent = (component) => {
     setActiveComponent(component);
@@ -20,9 +27,9 @@ const App = () => {
 
   const renderActiveComponent = () => {
     if (activeComponent === 'configurations') {
-      return <Configurations onFileUpload={handleFileUpload} jsonData={jsonData}/>;
+      return <Configurations onFileUpload={handleFileUpload} jsonData={jsonData} token={token}/>;
     } else if (activeComponent === 'fileProcessor') {
-      return <FileProcessor />;
+      return <FileProcessor token={token}/>;
     }
   };
 
@@ -44,14 +51,53 @@ const App = () => {
     reader.readAsArrayBuffer(file);
   };
 
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    try {
+      console.log(username,password)
+      const user = await loginService.login({username: username, password: password})
+      console.log(user)
+      setToken(`Bearer ${user.token}`)
+      setUser(user);
+      setUsername('');
+      setPassword('');
+      setIsLoggedIn(true);
+    } catch (exception) {
+      setErrorMessage('Wrong credentials')
+    }
+  }
+
   return (
-    <div className="app">
+    (isLoggedIn) ?
+    (<div className="app">
       <Sidebar toggleComponent={toggleComponent} />
       <div className="content">
-        <Header />
+        <Header username={user.name}/>
         <div className="main">{renderActiveComponent()}</div>
       </div>
-    </div>
+    </div>)
+    : (<div className='login'>
+        <div style={{color:"#CF6679"}}>{errorMessage}</div>
+        <form onSubmit={handleLogin}>
+          <div>
+            username: <input 
+              type='text'
+              value={username}
+              name='username'
+              onChange={({target})=>setUsername(target.value)}
+            />
+          </div>
+          <div>
+            password: <input 
+              type='text'
+              value={password}
+              name='password'
+              onChange={({target})=>setPassword(target.value)}
+            />
+          </div>
+          <button type='submit'>Login</button>
+        </form>
+    </div>)
   );
 };
 

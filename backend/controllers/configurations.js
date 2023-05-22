@@ -31,7 +31,6 @@ configRouter.post('/', userExtractor, async (req, res) => {
         return res.status(401).json({ error: 'token invalid' })
       }
       const user = req.user;
-      console.log(user)
 
       // Check if the configuration name already exists in the database
       const existingConfiguration = await Configuration.findOne({ name });
