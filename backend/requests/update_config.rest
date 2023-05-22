@@ -1,0 +1,8 @@
+PUT http://localhost:8080/api/configurations
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBsZWNsYWlyIiwiaWQiOiI2NDZhNmY4ZWE2YTVkOGNkODVhMDU5Y2MiLCJpYXQiOjE2ODQ3MTU2NTQsImV4cCI6MTY4NDcxOTI1NH0.ERemqUDmVaPDKamQoFeKx-EWfOfyeaP4iWya_m5m664
+
+{
+    "id": "646ab5ac4d646454657b013a",
+    "name": "test again!"
+}

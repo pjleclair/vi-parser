@@ -1,0 +1,11 @@
+POST http://localhost:8080/api/configurations
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBsZWNsYWlyIiwiaWQiOiI2NDZhNmY4ZWE2YTVkOGNkODVhMDU5Y2MiLCJpYXQiOjE2ODQ3MTQ3MTMsImV4cCI6MTY4NDcxODMxM30.8TX-LnBqNdET8owjmYr_VwJB1jn8jAINxTMpwoSwVD8
+
+{
+    "name": "Dr. Lomp's 34 Config",
+    "columnMappings": {
+        "0": "fullname"
+    },
+    "userId": "646a6f8ea6a5d8cd85a059cc"
+}
