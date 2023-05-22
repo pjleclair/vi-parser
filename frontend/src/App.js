@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Header from './components/header';
 import Configurations from './components/configurations.js';
@@ -20,6 +20,16 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [errorMessage, setErrorMessage] = useState('')
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedAppUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      setToken(user.token)
+      setIsLoggedIn(true)
+    }
+  }, [])
 
   const toggleComponent = (component) => {
     setActiveComponent(component);
@@ -54,9 +64,10 @@ const App = () => {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      console.log(username,password)
       const user = await loginService.login({username: username, password: password})
-      console.log(user)
+      window.localStorage.setItem(
+        'loggedAppUser', JSON.stringify(user)
+      )
       setToken(`Bearer ${user.token}`)
       setUser(user);
       setUsername('');
