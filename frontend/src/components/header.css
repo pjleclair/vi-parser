@@ -1,5 +1,30 @@
 .header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+}
+
+#loggedin {
+    margin-left: auto;
+}
+
+span {
+    color: #03DAC5;
+}
+
+h1 span {
+    color: #BB86FC;
+}
+
+@media (max-width: 600px) {
+    .header {
+        flex-direction: column;
+    }
+    .header,h1 {
+        margin-top: 0;
+        margin-bottom: .5rem;
+    }
+    #loggedin h3 ,
+        #loggedin {
+        margin: 0;
+    }
 }

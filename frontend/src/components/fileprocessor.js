@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './fileprocessor.css'
+import Notification from './notification'
 
 const FileProcessor = ({token}) => {
   const [file, setFile] = useState(null);
   const [configurations, setConfigurations] = useState([]);
   const [selectedConfiguration, setSelectedConfiguration] = useState(null);
-  const [uploadMsg, setUploadMsg] = useState("");
+  const [uploadMsg, setUploadMsg] = useState(null);
   const [gptArray, setGptArray] = useState([])
   const [orgName, setOrgName] = useState("")
   const [campaignDesc, setCampaignDesc] = useState("")
@@ -32,7 +33,7 @@ const FileProcessor = ({token}) => {
         setConfigurations(response.data)
       })
       .catch((error) => {
-        console.log('Error fetching configurations:', error);
+        setUploadMsg({msg: 'Error fetching configurations', color: "#CF6679"});
     });
   };
 
@@ -70,12 +71,12 @@ const FileProcessor = ({token}) => {
     try {
       const response = await axios.post('/api/upload/', formData, config);
       console.log('File upload successful:', response.data);
-      setUploadMsg({msg: response.data.message, color: '#BB86FC'});
+      setUploadMsg({msg: response.data.message, color: '#03DAC5'});
       setGptArray(response.data.gpt);
       // Perform further processing or handle the server response here
     } catch (error) {
       console.log('Error uploading file:', error);
-      setUploadMsg({msg: error.response.data.error, color: "CF6679"})
+      setUploadMsg({msg: error.response.data.error, color: "#CF6679"})
     }
   };
 
@@ -102,6 +103,7 @@ const FileProcessor = ({token}) => {
 
   return (
     <div className='processor-container'>
+      {(uploadMsg) && <Notification message={uploadMsg.msg} msgColor={uploadMsg.color}/>}
       <h1 style={{color: "#03DAC5"}}>File Processor</h1>
       <h2 style={{color: "#BB86FC"}}>Select Configuration:</h2>
         {configurations && configurations.length > 0 ? (
@@ -121,19 +123,19 @@ const FileProcessor = ({token}) => {
         )}
       <h2 style={{color: "#BB86FC",marginTop:'3rem'}}>GPT Details:</h2>
       <div className='config-container'>
-        <div>
+        <div id='gpt-field'>
           <h3>Campaign description:</h3>
           <input onChange={handleCampaignDescChange} value={campaignDesc} placeholder='ex: democratic political campaign'></input>
         </div>
-        <div>
+        <div id='gpt-field'>
           <h3>Organization name:</h3>
           <input onChange={handleOrgNameChange} value={orgName} placeholder='ex: World Economic Forum'></input>
         </div>
-        <div>
+        <div id='gpt-field'>
           <h3>Narrative:</h3>
           <input onChange={handleNarrativeChange} value={narrative} placeholder='ex: environmental values'></input>
         </div>
-        <div>
+        <div id='gpt-field'>
           <h3>Donate Link:</h3>
           <input onChange={handleDonateLinkChange} value={donateLink} placeholder='ex: https://bit.ly/ShJ67w'></input>
         </div>
@@ -157,9 +159,6 @@ const FileProcessor = ({token}) => {
       </div>
       <br />
       <button className='upload-button' onClick={handleUpload}>Upload</button>
-      {(uploadMsg) && (
-            <h2 style={{color: uploadMsg.color, fontWeight: "bolder", marginTop: "1rem"}}>{uploadMsg.msg}</h2>
-          )}
       <br/>
       {((gptArray)&&(gptArray.length > 0)) && (
         <div>

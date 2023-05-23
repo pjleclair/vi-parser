@@ -4,7 +4,7 @@ import './sidebar.css'
 const Sidebar = ({ toggleComponent }) => {
   return (
     <div className="sidebar">
-      <h2>Menu</h2>
+      <h2 style={{color:"#03DAC5"}}>Menu</h2>
       <ul>
         <li>
           <button onClick={() => toggleComponent('configurations')}>Config</button>

@@ -4,6 +4,7 @@ import Header from './components/header';
 import Configurations from './components/configurations.js';
 import FileProcessor from './components/fileprocessor.js';
 import Sidebar from './components/sidebar.js';
+import Notification from './components/notification.js'
 
 import loginService from './services/loginService';
 
@@ -19,7 +20,14 @@ const App = () => {
   const [activeComponent, setActiveComponent] = useState('configurations');
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
-  const [errorMessage, setErrorMessage] = useState('')
+  const [notifMessage, setNotifMessage] = useState('')
+  const [msgColor, setMsgColor] = useState('')
+
+  useEffect(()=>{
+    setTimeout(()=>{
+      setNotifMessage('')
+    },5000)
+  },[notifMessage])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedAppUser')
@@ -73,42 +81,49 @@ const App = () => {
       setUsername('');
       setPassword('');
       setIsLoggedIn(true);
+      setNotifMessage('Logged in successfully');
+      setMsgColor('#03DAC5')
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
+      setMsgColor('#CF6679')
+      setNotifMessage('Wrong credentials')
     }
   }
 
   return (
-    (isLoggedIn) ?
-    (<div className="app">
-      <Sidebar toggleComponent={toggleComponent} />
-      <div className="content">
-        <Header username={user.name}/>
-        <div className="main">{renderActiveComponent()}</div>
-      </div>
-    </div>)
-    : (<div className='login'>
-        <div style={{color:"#CF6679"}}>{errorMessage}</div>
-        <form onSubmit={handleLogin}>
-          <div>
-            username: <input 
-              type='text'
-              value={username}
-              name='username'
-              onChange={({target})=>setUsername(target.value)}
-            />
+    <div>
+      {(notifMessage) && <Notification message={notifMessage} msgColor={msgColor}/>}
+      {(isLoggedIn) ?
+      (<div className="app">
+        <Sidebar toggleComponent={toggleComponent} />
+        <div className="content">
+          <Header username={user.name}/>
+          <div className='main-container'>
+            <div className="main">{renderActiveComponent()}</div>
           </div>
-          <div>
-            password: <input 
-              type='text'
-              value={password}
-              name='password'
-              onChange={({target})=>setPassword(target.value)}
-            />
-          </div>
-          <button type='submit'>Login</button>
-        </form>
-    </div>)
+        </div>
+      </div>)
+      : (<div className='login'>
+          <form onSubmit={handleLogin}>
+            <div>
+              username: <input 
+                type='text'
+                value={username}
+                name='username'
+                onChange={({target})=>setUsername(target.value)}
+              />
+            </div>
+            <div>
+              password: <input 
+                type='text'
+                value={password}
+                name='password'
+                onChange={({target})=>setPassword(target.value)}
+              />
+            </div>
+            <button type='submit'>Login</button>
+          </form>
+      </div>)}
+    </div>
   );
 };
 

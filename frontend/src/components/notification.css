@@ -1,0 +1,16 @@
+.notification {
+    padding: 1rem;
+    border: 1px solid;
+    background-color: #000000;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 3;
+    left: 45%;
+    top: 75%;
+}
+
+@media (max-width: 600px) {
+    .notification {
+        left: 30%;
+    }
+}

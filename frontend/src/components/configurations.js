@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './configurations.css'; // Assuming you have a corresponding CSS file for styling
+import Notification from './notification'
 
 const Configurations = ({ onFileUpload, jsonData, onSaveConfiguration, token }) => {
   const [columnMappings, setColumnMappings] = useState({});
   const [sampleData, setSampleData] = useState([]);
   const [name, setName] = useState('');
-  const [uploadMsg, setUploadMsg] = useState({});
-  const [updateMsg, setUpdateMsg] = useState({});
+  const [updateMsg, setUpdateMsg] = useState(null);
   const [configurations, setConfigurations] = useState([])
   const [selectedConfiguration, setSelectedConfiguration] = useState({name:''})
 
@@ -22,14 +22,6 @@ const Configurations = ({ onFileUpload, jsonData, onSaveConfiguration, token }) 
       );
     }
   }, [jsonData]);
-
-  useEffect(()=> {
-    if (uploadMsg !== "") {
-      setTimeout(() => {
-        setUploadMsg("")
-      }, 5000);
-    }
-  },[uploadMsg])
 
   useEffect(()=> {
     if (updateMsg !== "") {
@@ -49,7 +41,7 @@ const Configurations = ({ onFileUpload, jsonData, onSaveConfiguration, token }) 
       setConfigurations(response.data)
     })
     .catch((error) => {
-      console.log('Error fetching configurations:', error);
+      setUpdateMsg({msg: 'Error fetching configurations', color: '#CF6679'});
     });
   };
 
@@ -88,11 +80,11 @@ const Configurations = ({ onFileUpload, jsonData, onSaveConfiguration, token }) 
     axios.post('/api/configurations/', configuration, config)
       .then((response) => {
         console.log('Configuration saved successfully:', response.data);
-        setUploadMsg({msg: response.data.message, color: "#BB86FC"});
+        setUpdateMsg({msg: response.data.message, color: "#03DAC5"});
       })
       .catch((error) => {
         console.error('Error saving configuration:', error);
-        setUploadMsg({msg: error.response.data.error, color: "#CF6679"});
+        setUpdateMsg({msg: error.response.data.error, color: "#CF6679"});
       });
   };
 
@@ -110,7 +102,7 @@ const Configurations = ({ onFileUpload, jsonData, onSaveConfiguration, token }) 
     axios.put('/api/configurations/', configuration, config)
       .then((response) => {
         console.log('Configuration updated successfully:', response.data);
-        setUpdateMsg({msg: response.data.message, color: "#BB86FC"});
+        setUpdateMsg({msg: response.data.message, color: "#03DAC5"});
       })
       .catch((error) => {
         console.error('Error updating configuration:', error);
@@ -133,7 +125,7 @@ const Configurations = ({ onFileUpload, jsonData, onSaveConfiguration, token }) 
       axios.delete(`/api/configurations/${id}`,config)
         .then((response) => {
           console.log('Configuration deleted succesfully');
-          setUpdateMsg({msg: response.data.message, color: "#BB86FC"});
+          setUpdateMsg({msg: response.data.message, color: "#03DAC5"});
         })
         .catch((error) => {
           console.error('Error deleting configuration:', error);
@@ -144,30 +136,10 @@ const Configurations = ({ onFileUpload, jsonData, onSaveConfiguration, token }) 
 
   return (
     <div className="configurations">
+      {(updateMsg) && <Notification message={updateMsg.msg} msgColor={updateMsg.color}/>}
       <h1 style={{color: "#03DAC5"}}>Configurations</h1>
       <p style={{width: 'fit-content'}}>Upload a file below to create a configuration:</p>
       <input type="file" onChange={onFileUpload} />
-      {sampleData.length > 0 && (
-        <div className="sample-data">
-          <h2>Sample Data:</h2>
-          <table>
-            <thead>
-              <tr>
-                {Object.keys(sampleData).map((key, index) => (
-                  <th key={index}>{key}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                {Object.values(sampleData).map((value, index) => (
-                  <td key={index}>{value}</td>
-                ))}
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      )}
       {sampleData.length > 0 && (
         <div className="column-mapping">
           <h2>Column Mapping:</h2>
@@ -181,7 +153,7 @@ const Configurations = ({ onFileUpload, jsonData, onSaveConfiguration, token }) 
             <tbody>
               {Object.keys(sampleData).map((columnName, index) => (
                 <tr key={index}>
-                  <td>{columnName}</td>
+                  <td>{sampleData[index]}</td>
                   <td className='select'>
                     <select
                       name={index}
@@ -204,9 +176,6 @@ const Configurations = ({ onFileUpload, jsonData, onSaveConfiguration, token }) 
           <button onClick={() => saveConfiguration(name, columnMappings)}>
             Save Configuration
           </button>
-          {(uploadMsg) && (
-            <h2 style={{color: uploadMsg.color, fontWeight: "bolder", marginTop: "1rem"}}>{uploadMsg.msg}</h2>
-          )}
         </div>
       )}
       <h2 style={{color: "#BB86FC"}}>--or--</h2>
@@ -246,7 +215,7 @@ const Configurations = ({ onFileUpload, jsonData, onSaveConfiguration, token }) 
                     <td className='select'>
                       <select
                         name={index}
-                        value={columnMappings[index]}
+                        value={selectedConfiguration.columnMappings[index]}
                         onChange={handleColumnMapping}
                       >
                         <option value="">Select Value</option>
@@ -265,9 +234,6 @@ const Configurations = ({ onFileUpload, jsonData, onSaveConfiguration, token }) 
             <button id='update' onClick={() => updateConfiguration(name, selectedConfiguration._id, columnMappings)}>
               Update Configuration
             </button>
-            {(updateMsg) && (
-              <h2 style={{color: updateMsg.color, fontWeight: "bolder", marginTop: "1rem"}}>{updateMsg.msg}</h2>
-            )}
         </div>
         )}
     </div>
