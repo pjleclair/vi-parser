@@ -26,6 +26,10 @@
     width: fit-content;
 }
 
+.no-configs {
+    border: 1px solid;
+}
+
 @media (max-width: 600px) {
     .config-update-container {
         flex-direction: column;

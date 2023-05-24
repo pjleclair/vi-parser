@@ -46,7 +46,7 @@ const Configurations = ({ onFileUpload, jsonData, token }) => {
       setConfigurations(response.data)
     })
     .catch((error) => {
-      setUpdateMsg({msg: 'Error fetching configurations', color: '#CF6679'});
+      console.log({msg: 'Error fetching configurations', color: '#CF6679'});
     });
   };
 

@@ -38,7 +38,7 @@ const FileProcessor = ({token}) => {
         setConfigurations(response.data)
       })
       .catch((error) => {
-        setUploadMsg({msg: 'Error fetching configurations', color: "#CF6679"});
+        console.log({msg: 'Error fetching configurations', color: "#CF6679"});
     });
   };
 

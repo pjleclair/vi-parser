@@ -16,11 +16,13 @@ body {
   flex: 1;
   flex-direction: column;
   width: 75%;
+  position: relative;
 }
 
 @media (max-width: 600px) {
   .content {
     padding: 0;
+    text-align: center;
   }
 }
 

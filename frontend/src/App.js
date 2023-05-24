@@ -110,11 +110,12 @@ const App = () => {
 
   return (
     <div>
-      {(notifMessage) && <Notification message={notifMessage} msgColor={msgColor}/>}
+      {(notifMessage && !isLoggedIn) && <Notification message={notifMessage} msgColor={msgColor}/>}
       {(isLoggedIn) ?
       (<div className="app">
         <Sidebar toggleComponent={toggleComponent} />
         <div className="content">
+        {(notifMessage && isLoggedIn) && <Notification message={notifMessage} msgColor={msgColor}/>}
           <Header />
           <div className='main-container'>
             <div className="main">{renderActiveComponent()}</div>
