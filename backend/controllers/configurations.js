@@ -127,8 +127,10 @@ configRouter.get('/', userExtractor, (req, res) => {
                 if (config.user._id.toString() === req.user._id.toString())
                     return config
             })
-            console.log(userConfigs)
-            res.json(userConfigs)
+            if (userConfigs[0] === undefined)
+                res.status(500).json({ error: 'Failed to fetch configurations' });
+            else
+                res.json(userConfigs)
         } else {
             res.json(configurations);
         }

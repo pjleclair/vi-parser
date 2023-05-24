@@ -35,7 +35,6 @@ const FileProcessor = ({token}) => {
       }
       axios.get('/api/configurations/',config)
       .then((response) => {
-        console.log(response.data)
         setConfigurations(response.data)
       })
       .catch((error) => {

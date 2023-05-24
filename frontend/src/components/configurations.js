@@ -33,7 +33,6 @@ const Configurations = ({ onFileUpload, jsonData, token }) => {
 
   useEffect(()=> {
     fetchConfigurations();
-    console.log(configurations)
   },[])
 
   const fetchConfigurations = () => {
@@ -44,7 +43,6 @@ const Configurations = ({ onFileUpload, jsonData, token }) => {
     }
     axios.get('/api/configurations/',config)
     .then((response) => {
-      console.log(response.data)
       setConfigurations(response.data)
     })
     .catch((error) => {
