@@ -28,8 +28,14 @@ const FileProcessor = ({token}) => {
   },[uploadMsg])
 
   const fetchConfigurations = () => {
-      axios.get('/api/configurations/')
+      const config = {
+        headers: {
+          Authorization: token
+        }
+      }
+      axios.get('/api/configurations/',config)
       .then((response) => {
+        console.log(response.data)
         setConfigurations(response.data)
       })
       .catch((error) => {
@@ -70,7 +76,6 @@ const FileProcessor = ({token}) => {
 
     try {
       const response = await axios.post('/api/upload/', formData, config);
-      console.log('File upload successful:', response.data);
       setUploadMsg({msg: response.data.message, color: '#03DAC5'});
       setGptArray(response.data.gpt);
       // Perform further processing or handle the server response here

@@ -33,4 +33,17 @@ loginRouter.post('/', async (request, response) => {
     .send({ token, username: user.username, name: user.name })
 })
 
+loginRouter.get('/', async (req,res) => {
+    try {
+        const decodedToken = jwt.verify(req.token, process.env.SECRET)
+        if (decodedToken.exp*1000 <= Date.now()) {
+            return res.status(401).json({ error: 'token invalid' })
+        } else {
+            return res.status(201).json({msg: "valid token"})
+        }
+    } catch (error) {
+        return res.status(401).json({error: 'token invalid'})
+    }
+})
+
 module.exports = loginRouter

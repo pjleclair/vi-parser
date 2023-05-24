@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 import Header from './components/header';
 import Configurations from './components/configurations.js';
@@ -33,9 +34,24 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedAppUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      setToken(user.token)
-      setIsLoggedIn(true)
+      const config = {
+        headers: {
+          Authorization: user.token
+        }
+      }
+      axios.get('/api/login',config)
+      .then((res)=>{
+        if (res.status === 201) {
+          setUser(user)
+          setToken(user.token)
+          setIsLoggedIn(true)
+        } else {
+          setNotifMessage('Token expired, please login again')
+        }
+      })
+      .catch((error) => {
+        setNotifMessage('Token expired, please login again')
+      })
     }
   }, [])
 

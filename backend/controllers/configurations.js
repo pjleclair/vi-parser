@@ -57,7 +57,7 @@ configRouter.put('/', userExtractor, async (req, res) => {
         let name = req.body.name;
         let columnMappings = req.body.columnMappings;
         const id = req.body.id;
-
+        
         //check to see if user's token matches the config creator's
         const decodedToken = jwt.verify(req.token, process.env.SECRET)
         if (!decodedToken.id) {
@@ -67,7 +67,7 @@ configRouter.put('/', userExtractor, async (req, res) => {
         const config = await Configuration.findById(id)
         if (config === null) {
             res.status(401).json({error: 'No configuration found with that ID'})
-        } else if (!(user._id.toString() === config.user._id.toString())) {
+        } else if (!(user._id.toString() === config.user.toString())) {
             res.status(401).json({error: 'Configurations can only be updated by the creator'})
         } else {
             // Update the configuration
@@ -101,28 +101,37 @@ configRouter.delete('/:id', userExtractor, async (req, res) => {
         const config = await Configuration.findById(id)
         if (config === null) {
             res.status(401).json({error: 'No configuration found with that ID'})
-        } else if (!(user._id.toString() === config.user._id.toString())) {
-            res.status(401).json({error: 'Configurations can only be deleted by the creator'})
+        } else if (!(user._id.toString() === config.user.toString())) {
+            res.status(401).json({error: 'Configurations can only be deleted by their creator'})
         } else {
             Configuration.findByIdAndDelete(id)
             .then(config => {
-                res.json({ message: 'Configuration deleted successfully:', config: config });
+                res.json({ message: 'Configuration deleted successfully', config: config });
             })
             .catch(error => {
                 res.status(500).json({error: 'Failed to delete configuration'})
         })}
     } catch (error) {
-        console.log('Error deleting configuration:', error);
+        console.log('Error deleting configuration', error);
         res.status(500).json({ error: 'Failed to delete configuration' });
     }
   })
   
   
   // Fetch configurations endpoint
-configRouter.get('/', (req, res) => {
+configRouter.get('/', userExtractor, (req, res) => {
     Configuration.find().populate('user', {username: 1, name: 1})
       .then((configurations) => {
-        res.json(configurations);
+        if (req.user) {
+            const userConfigs = configurations.map((config)=>{
+                if (config.user._id.toString() === req.user._id.toString())
+                    return config
+            })
+            console.log(userConfigs)
+            res.json(userConfigs)
+        } else {
+            res.json(configurations);
+        }
       })
       .catch((error) => {
         res.status(500).json({ error: 'Failed to fetch configurations' });

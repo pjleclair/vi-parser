@@ -3,6 +3,7 @@ import "./notification.css"
 const Notification = ({message, msgColor}) => {
     let notifColor
     let borderColor
+    console.log(message)
     if (msgColor) {
         notifColor = msgColor;
         borderColor = msgColor;

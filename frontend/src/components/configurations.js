@@ -3,7 +3,7 @@ import axios from 'axios';
 import './configurations.css'; // Assuming you have a corresponding CSS file for styling
 import Notification from './notification'
 
-const Configurations = ({ onFileUpload, jsonData, onSaveConfiguration, token }) => {
+const Configurations = ({ onFileUpload, jsonData, token }) => {
   const [columnMappings, setColumnMappings] = useState({});
   const [sampleData, setSampleData] = useState([]);
   const [name, setName] = useState('');
@@ -33,11 +33,18 @@ const Configurations = ({ onFileUpload, jsonData, onSaveConfiguration, token }) 
 
   useEffect(()=> {
     fetchConfigurations();
+    console.log(configurations)
   },[])
 
   const fetchConfigurations = () => {
-    axios.get('/api/configurations/')
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    }
+    axios.get('/api/configurations/',config)
     .then((response) => {
+      console.log(response.data)
       setConfigurations(response.data)
     })
     .catch((error) => {
@@ -50,7 +57,6 @@ const Configurations = ({ onFileUpload, jsonData, onSaveConfiguration, token }) 
     if (selectedConfigId === 'select')
       setSelectedConfiguration({name:''})
     const selectedConfig = configurations.find((config) => config._id === selectedConfigId);
-    console.log(selectedConfig)
     setSelectedConfiguration(selectedConfig);
   };
 
@@ -111,15 +117,11 @@ const Configurations = ({ onFileUpload, jsonData, onSaveConfiguration, token }) 
   };
 
   const deleteConfiguration = (id) => {
-    const idObj = {
-      id
-    }
     const config = {
       headers: {
         Authorization: token
       }
     }
-    console.log(idObj)
     if (window.confirm("Are you sure you want to delete this configuration?"))
     {
       axios.delete(`/api/configurations/${id}`,config)
