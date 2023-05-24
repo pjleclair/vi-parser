@@ -24,6 +24,15 @@
     gap: 1rem;
 }
 
+.gpt-array {
+    display: flex;
+    flex-direction: column;
+}
+
+#gpt {
+    border: 1px solid;
+}
+
 @media (max-width: 600px) {
     .config-container {
         display: flex;

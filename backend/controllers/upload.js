@@ -83,7 +83,8 @@ uploadRouter.post('/', (req, res) => {
         console.log(obj)
         const data={
         "model": "text-davinci-003",
-        "prompt": `Create a fundraising text message addressed to ${obj.fullName} for a ${campaignDesc} campaign named "${orgName}" based on ${narrative} that targets US citizens of age ${obj.age} that are members of the ${obj.party} political party - be sure to include a shortened hyperlink to donate at ${donateLink} and address the recipient by first name, but do not explicitly mention age or political party, just use those parameters to tailor your content.`,
+        //"prompt": `Create a fundraising text message addressed to ${obj.fullName} for a ${campaignDesc} campaign named "${orgName}" based on ${narrative} that targets US citizens of age ${obj.age} that are members of the ${obj.party} political party - be sure to include a shortened hyperlink to donate at ${donateLink} and address the recipient by first name, but do not explicitly mention age or political party, just use those parameters to tailor your content.`,
+        "prompt": `Compose a compelling fundraising text message for a ${campaignDesc} campaign named "${orgName}" targeting US citizens, with the goal of encouraging donations. Tailor the content based on ${narrative} and consider the recipient's interests and values. Address the recipient (${obj.fullName}) by their first name and craft the message to resonate with supporters of the ${obj.party} political party who are of ${obj.age}. Include a shortened hyperlink (${donateLink}) for easy donation. Avoid directly mentioning personal details like political party and age, but leverage the provided parameters creatively to make the content more relevant and engaging. Sign the text from ${orgName} or a variation.`,
         "max_tokens": 240,
         "temperature": 0.5
         }

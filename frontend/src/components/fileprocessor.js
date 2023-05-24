@@ -165,10 +165,10 @@ const FileProcessor = ({token}) => {
       <button className='upload-button' onClick={handleUpload}>Upload</button>
       <br/>
       {((gptArray)&&(gptArray.length > 0)) && (
-        <div>
-          <h1>Sample output:</h1>
+        <div className='gpt-array'>
+          <h1>Generated Content:</h1>
             {gptArray.map((message,i) => {
-            return <p key={i}
+            return <p id='gpt' key={i}
              dangerouslySetInnerHTML={{__html: message.trim()}}></p>
           })}
         </div>
