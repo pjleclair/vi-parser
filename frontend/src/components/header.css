@@ -7,7 +7,6 @@
     border-bottom-width: 1px;
     border-bottom-color: rgb(47, 51, 54);
     border-bottom-style: solid;
-    padding: 1rem;
 }
 
 h1 span {
@@ -17,6 +16,7 @@ h1 span {
 @media (max-width: 600px) {
     .header {
         flex-direction: column;
+        padding: 1rem;
     }
     .header,h1 {
         margin-top: 0;
