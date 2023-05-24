@@ -5,8 +5,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: .5rem;
     border-radius: .5rem;
+    padding: .5rem;
 }
 
 .sidebar ul {
@@ -30,6 +30,10 @@
     left: 0;
     right: 0;
     z-index: 3;
+    border-top-color: rgb(47, 51, 54);
+    border-top-width: 1px;
+    border-top-style: solid;
+    padding: .5rem 0;
   }
   .sidebar ul {
     list-style-type: none;
