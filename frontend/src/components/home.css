@@ -1,0 +1,13 @@
+span {
+    color: #03DAC5;
+}
+
+.home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.home h2 {
+    color: #03DAC5;
+}

@@ -10,9 +10,3 @@
     transform: translate(-50%,-50%);
     text-align: center;
 }
-
-@media (max-width: 600px) {
-    .notification {
-        left: 60%;
-    }
-}

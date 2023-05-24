@@ -4,6 +4,7 @@ import axios from 'axios';
 import Header from './components/header';
 import Configurations from './components/configurations.js';
 import FileProcessor from './components/fileprocessor.js';
+import Home from './components/home.js'
 import Sidebar from './components/sidebar.js';
 import Notification from './components/notification.js'
 
@@ -18,7 +19,7 @@ const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [activeComponent, setActiveComponent] = useState('configurations');
+  const [activeComponent, setActiveComponent] = useState('home');
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [notifMessage, setNotifMessage] = useState('')
@@ -64,6 +65,8 @@ const App = () => {
       return <Configurations onFileUpload={handleFileUpload} jsonData={jsonData} token={token}/>;
     } else if (activeComponent === 'fileProcessor') {
       return <FileProcessor token={token}/>;
+    } else if (activeComponent === 'home') {
+      return <Home userName={user.name}/>;
     }
   };
 
@@ -112,7 +115,7 @@ const App = () => {
       (<div className="app">
         <Sidebar toggleComponent={toggleComponent} />
         <div className="content">
-          <Header username={user.name}/>
+          <Header />
           <div className='main-container'>
             <div className="main">{renderActiveComponent()}</div>
           </div>
