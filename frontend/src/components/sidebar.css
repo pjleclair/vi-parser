@@ -11,7 +11,43 @@
 
 @media (max-width: 600px) {
   .sidebar {
-    width: 15%;
+    /* width: 15%; */
+    height: fit-content;
+    width: 100vw;
+    position: absolute;
+    flex-direction: row;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  .sidebar ul {
+    list-style-type: none;
+    padding: .5rem;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    /* align-items: center; */
+    justify-content: center;
+  }
+  .sidebar button {
+    /* padding: 0.5rem;
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    color: #FFFFFF; */
+  
+    display: flex;
+    align-items: center;
+  }
+  .sidebar li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+  }
+
+  .sidebar h2 {
+    display: none;
   }
 }
 
@@ -27,7 +63,6 @@
 }
   
 .sidebar li {
-  margin-bottom: 1rem;
   width: 100%;
   max-width: 5rem;
 }

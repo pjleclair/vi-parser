@@ -173,6 +173,7 @@ const FileProcessor = ({token}) => {
           })}
         </div>
       )}
+      <div id='mobile'></div>
     </div>
   );
 };
