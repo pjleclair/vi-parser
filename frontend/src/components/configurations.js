@@ -236,6 +236,7 @@ const Configurations = ({ onFileUpload, jsonData, token }) => {
             </button>
         </div>
         )}
+      <div id='mobile'></div>
     </div>
   );
 };
