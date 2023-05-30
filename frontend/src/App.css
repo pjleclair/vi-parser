@@ -70,4 +70,18 @@ form {
 #login {
   width: fit-content;
 }
-  
+
+button {
+  padding: 0.5rem;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  color: #FFFFFF;
+
+  display: flex;
+  justify-content: center;
+
+  border: 1px solid;
+  border-color: #03DAC5;
+  background-color: transparent;
+}

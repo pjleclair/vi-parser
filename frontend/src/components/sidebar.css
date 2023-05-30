@@ -22,7 +22,7 @@
 @media (max-width: 600px) {
   .sidebar {
     /* width: 15%; */
-    height: fit-content;
+    height: 2.25rem;
     width: 100dvw;
     position: absolute;
     flex-direction: row;

@@ -109,55 +109,62 @@ const FileProcessor = ({token}) => {
     <div className='processor-container'>
       {(uploadMsg) && <Notification message={uploadMsg.msg} msgColor={uploadMsg.color}/>}
       <h1 style={{color: "#03DAC5"}}>File Processor</h1>
-      <h2 style={{color: "#BB86FC"}}>Select Configuration:</h2>
-        {configurations && configurations.length > 0 ? (
-          <div className='select'>
-            <select onChange={handleConfigurationSelect}>
-              <option value="">Select Configuration</option>
-              {configurations.map((config) => (
-                <option key={config._id} value={config._id}>
-                  {config.name}
-                </option>
-              ))}
-            </select>
-            <span className='focus'></span>
-          </div>
-        ) : (
-          <p className='no-configs'>No configurations found.</p>
-        )}
-      <h2 style={{color: "#BB86FC",marginTop:'3rem'}}>GPT Details:</h2>
-      <div className='config-container'>
-        <div id='gpt-field'>
-          <h3>Campaign description:</h3>
-          <input onChange={handleCampaignDescChange} value={campaignDesc} placeholder='ex: democratic political campaign'></input>
-        </div>
-        <div id='gpt-field'>
-          <h3>Organization name:</h3>
-          <input onChange={handleOrgNameChange} value={orgName} placeholder='ex: World Economic Forum'></input>
-        </div>
-        <div id='gpt-field'>
-          <h3>Narrative:</h3>
-          <input onChange={handleNarrativeChange} value={narrative} placeholder='ex: environmental values'></input>
-        </div>
-        <div id='gpt-field'>
-          <h3>Donate Link:</h3>
-          <input onChange={handleDonateLinkChange} value={donateLink} placeholder='ex: https://bit.ly/ShJ67w'></input>
-        </div>
+      <div className='config-select-container'>
+        <h2 style={{color: "#BB86FC",margin:'0 0 .5rem 0'}}>Select Configuration:</h2>
+          {configurations && configurations.length > 0 ? (
+            <div className='select'>
+              <select onChange={handleConfigurationSelect}>
+                <option value="">Select Configuration</option>
+                {configurations.map((config) => (
+                  <option key={config._id} value={config._id}>
+                    {config.name}
+                  </option>
+                ))}
+              </select>
+              <span className='focus'></span>
+            </div>
+          ) : (
+            <p className='no-configs'>No configurations found.</p>
+          )}
       </div>
-      <div className='upload-container'>
-        <div className='file-container'>
-          <h2 style={{color: "#BB86FC"}}>Upload File:</h2>
-          <input id='file' type="file" accept=".xlsx,.xls" onChange={handleFileUpload} />
-        </div>
-        <div>
-          <h2 style={{color: "#BB86FC"}}>Delivery Method:</h2>
-          <div id='radio'>
-            <input name='deliveryMethod' type="radio" onChange={handleDeliveryMethodChange} id='text' checked={deliveryMethod === 'text'} value='text'/>
-            <label>Text</label>
+      <div className='gpt-container'>
+        <h2 style={{color: "#BB86FC"}}>GPT Details:</h2>
+        <div className='config-container'>
+          <div id='gpt-field'>
+            <h3>Campaign description:</h3>
+            <input onChange={handleCampaignDescChange} value={campaignDesc} placeholder='ex: democratic political campaign'></input>
           </div>
-          <div id='radio'>
-            <input name='deliveryMethod' type="radio" onChange={handleDeliveryMethodChange} id='email' checked={deliveryMethod === 'email'} value='email'/>
-            <label>Email</label>
+          <div id='gpt-field'>
+            <h3>Organization name:</h3>
+            <input onChange={handleOrgNameChange} value={orgName} placeholder='ex: World Economic Forum'></input>
+          </div>
+          <div id='gpt-field'>
+            <h3>Narrative:</h3>
+            <input onChange={handleNarrativeChange} value={narrative} placeholder='ex: environmental values'></input>
+          </div>
+          <div id='gpt-field'>
+            <h3>Donate Link:</h3>
+            <input onChange={handleDonateLinkChange} value={donateLink} placeholder='ex: https://bit.ly/ShJ67w'></input>
+          </div>
+        </div>
+        <div id='divider' style={{border: "1px solid rgb(47, 51, 54)", width: '100%', margin: '1rem'}}></div>
+        <div className='upload-container'>
+          <div className='file-container'>
+            <h2 style={{color: "#BB86FC"}}>Upload File:</h2>
+            <input id='file' type="file" accept=".xlsx,.xls" onChange={handleFileUpload} />
+          </div>
+          <div className='delivery-container'>
+            <h2 style={{color: "#BB86FC"}}>Delivery Method:</h2>
+            <div className='radio-container'>
+              <div id='radio'>
+                <input name='deliveryMethod' type="radio" onChange={handleDeliveryMethodChange} id='text' checked={deliveryMethod === 'text'} value='text'/>
+                <label>Text</label>
+              </div>
+              <div id='radio'>
+                <input name='deliveryMethod' type="radio" onChange={handleDeliveryMethodChange} id='email' checked={deliveryMethod === 'email'} value='email'/>
+                <label>Email</label>
+              </div>
+            </div>
           </div>
         </div>
       </div>

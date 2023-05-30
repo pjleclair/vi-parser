@@ -1,5 +1,7 @@
 import './sidebar.css';
-import img from '../images/home-dark.svg';
+import homeImg from '../images/home-dark.svg';
+import configImg from '../images/config-dark.svg';
+import processImg from '../images/process-dark.svg';
 
 const Sidebar = ({ toggleComponent }) => {
   const vw = window.innerWidth;
@@ -7,15 +9,20 @@ const Sidebar = ({ toggleComponent }) => {
   let renderButtons =
   <ul>
     <li>
-      <button onClick={() => toggleComponent('configurations')}>Config</button>
+      {/* <button onClick={() => toggleComponent('configurations')}>Config</button> */}
+      <img id='img' src={configImg} alt='configurations' value='configurations'
+        onClick={() => toggleComponent('configurations')}
+      />
     </li>
     <li>
-      <img id='img' src={img} alt='home' value='home'
+      <img id='img' src={homeImg} alt='home' value='home'
         onClick={() => toggleComponent('home')}
       />
     </li>
     <li>
-      <button onClick={() => toggleComponent('fileProcessor')}>Process</button>
+      <img id='img' src={processImg} alt='process' value='fileProcessor'
+          onClick={() => toggleComponent('fileProcessor')}
+        />
     </li>
   </ul>
 
@@ -23,19 +30,23 @@ const Sidebar = ({ toggleComponent }) => {
     renderButtons = 
     <ul>
       <li>
-        <img id='img' src={img} alt='home' value='home'
+        <img id='img' src={homeImg} alt='home' value='home'
           onClick={() => toggleComponent('home')}
         />
       </li>
       <li>
-        <button onClick={() => toggleComponent('configurations')}>Config</button>
+        <img id='img' src={configImg} alt='configurations' value='configurations'
+          onClick={() => toggleComponent('configurations')}
+        />
       </li>
       <li>
-        <button onClick={() => toggleComponent('fileProcessor')}>Process</button>
+        <img id='img' src={processImg} alt='process' value='fileProcessor'
+            onClick={() => toggleComponent('fileProcessor')}
+          />
       </li>
     </ul>
   }
-  
+
   return (
     <div className="sidebar">
       {renderButtons}

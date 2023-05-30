@@ -138,107 +138,113 @@ const Configurations = ({ onFileUpload, jsonData, token }) => {
     <div className="configurations">
       {(updateMsg) && <Notification message={updateMsg.msg} msgColor={updateMsg.color}/>}
       <h1 style={{color: "#03DAC5"}}>Configurations</h1>
-      <p style={{width: 'fit-content'}}>Upload a file below to create a configuration:</p>
-      <input type="file" onChange={onFileUpload} />
-      {sampleData.length > 0 && (
-        <div className="column-mapping">
-          <h2>Column Mapping:</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Column</th>
-                <th>Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.keys(sampleData).map((columnName, index) => (
-                <tr key={index}>
-                  <td>{sampleData[index]}</td>
-                  <td className='select'>
-                    <select
-                      name={index}
-                      value={columnMappings[index]}
-                      onChange={handleColumnMapping}
-                    >
-                      <option value="">Select Value</option>
-                      <option value="fullName">Full Name</option>
-                      <option value="phoneNumber">Phone Number</option>
-                      <option value="emailAddress">Email Address</option>
-                      <option value="party">Party</option>
-                      <option value="age">Age</option>
-                    </select>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <input type="text" value={name} onChange={handleInputChange} placeholder="Configuration Name" />
-          <button onClick={() => saveConfiguration(name, columnMappings)}>
-            Save Configuration
-          </button>
-        </div>
-      )}
-      <h2 style={{color: "#BB86FC"}}>--or--</h2>
-      <p style={{width: 'fit-content'}}>Select an existing configuration to update or delete:</p>
-        {configurations && configurations.length > 0 ? (
-          <div className='config-update-container'>
-            <div className='select'>
-              <select onChange={handleConfigurationSelect}>
-                <option value="select">Select Configuration</option>
-                {configurations.map((config) => (
-                  <option key={config._id} value={config._id}>
-                    {config.name}
-                  </option>
-                ))}
-              </select>
-              <span className='focus'></span>
-            </div>
-            {(selectedConfiguration && (selectedConfiguration.name.length > 0)) && (<button id='delete' onClick={()=>deleteConfiguration(selectedConfiguration._id)}>Delete</button>)}
-          </div>
-        ) : (
-          <p className='no-configs'>No configurations found.</p>
-        )}
-        {(selectedConfiguration && (selectedConfiguration.name.length > 0)) && (
-          <div className="column-mapping">
-            <h2>Column Mapping:</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>Column</th>
-                  <th>Value</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Object.keys(selectedConfiguration.columnMappings).map((columnName, index) => (
-                  <tr key={index}>
-                    <td>{columnName}</td>
-                    <td className='select'>
-                      <select
-                        name={index}
-                        value={selectedConfiguration.columnMappings[index]}
-                        onChange={handleColumnMapping}
-                      >
-                        <option value="">Select Value</option>
-                        <option value="fullName">Full Name</option>
-                        <option value="phoneNumber">Phone Number</option>
-                        <option value="emailAddress">Email Address</option>
-                        <option value="party">Party</option>
-                        <option value="age">Age</option>
-                      </select>
-                    </td>
+      <div className='select-config-container'>
+        <div className='upload-config-container'>
+          <p style={{width: 'fit-content', margin: '0'}}>Upload a file below to create a configuration:</p>
+          <input type="file" onChange={onFileUpload} />
+          {sampleData.length > 0 && (
+            <div className="column-mapping">
+              <h2>Column Mapping:</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Column</th>
+                    <th>Value</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-            <input type="text" value={name} onChange={handleInputChange} placeholder="Configuration Name" />
-            <button id='update' onClick={() => updateConfiguration(name, selectedConfiguration._id, columnMappings)}>
-              Update Configuration
-            </button>
+                </thead>
+                <tbody>
+                  {Object.keys(sampleData).map((columnName, index) => (
+                    <tr key={index}>
+                      <td>{sampleData[index]}</td>
+                      <td className='select'>
+                        <select
+                          name={index}
+                          value={columnMappings[index]}
+                          onChange={handleColumnMapping}
+                        >
+                          <option value="">Select Value</option>
+                          <option value="fullName">Full Name</option>
+                          <option value="phoneNumber">Phone Number</option>
+                          <option value="emailAddress">Email Address</option>
+                          <option value="party">Party</option>
+                          <option value="age">Age</option>
+                        </select>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <input type="text" value={name} onChange={handleInputChange} placeholder="Configuration Name" />
+              <button onClick={() => saveConfiguration(name, columnMappings)}>
+                Save Configuration
+              </button>
+            </div>
+          )}
         </div>
-        )}
-      <div id='mobile'></div>
-    </div>
-  );
+        <div id='divider'></div>
+        <div className='update-config-container'>
+          <p style={{width: 'fit-content', margin: '0'}}>Select an existing configuration to update or delete:</p>
+            {configurations && configurations.length > 0 ? (
+              <div className='config-update-container'>
+                <div className='select'>
+                  <select onChange={handleConfigurationSelect}>
+                    <option value="select">Select Configuration</option>
+                    {configurations.map((config) => (
+                      <option key={config._id} value={config._id}>
+                        {config.name}
+                      </option>
+                    ))}
+                  </select>
+                  <span className='focus'></span>
+                </div>
+                {(selectedConfiguration && (selectedConfiguration.name.length > 0)) && (<button id='delete' onClick={()=>deleteConfiguration(selectedConfiguration._id)}>Delete</button>)}
+              </div>
+            ) : (
+              <p className='no-configs'>No configurations found.</p>
+            )}
+            {(selectedConfiguration && (selectedConfiguration.name.length > 0)) && (
+              <div className="column-mapping">
+                <h2>Column Mapping:</h2>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Column</th>
+                      <th>Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.keys(selectedConfiguration.columnMappings).map((columnName, index) => (
+                      <tr key={index}>
+                        <td>{columnName}</td>
+                        <td className='select'>
+                          <select
+                            name={index}
+                            value={selectedConfiguration.columnMappings[index]}
+                            onChange={handleColumnMapping}
+                          >
+                            <option value="">Select Value</option>
+                            <option value="fullName">Full Name</option>
+                            <option value="phoneNumber">Phone Number</option>
+                            <option value="emailAddress">Email Address</option>
+                            <option value="party">Party</option>
+                            <option value="age">Age</option>
+                          </select>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <input type="text" value={name} onChange={handleInputChange} placeholder="Configuration Name" />
+                <button id='update' onClick={() => updateConfiguration(name, selectedConfiguration._id, columnMappings)}>
+                  Update Configuration
+                </button>
+            </div>
+            )}
+          </div>
+        </div>
+        <div id='mobile'></div>
+      </div>
+    );
 };
 
 export default Configurations;
