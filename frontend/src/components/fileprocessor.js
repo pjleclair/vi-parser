@@ -108,9 +108,9 @@ const FileProcessor = ({token}) => {
   return (
     <div className='processor-container'>
       {(uploadMsg) && <Notification message={uploadMsg.msg} msgColor={uploadMsg.color}/>}
-      <h1 style={{color: "#03DAC5"}}>File Processor</h1>
+      <h1 style={{color: "#FFFFFF"}}>File Processor</h1>
       <div className='config-select-container'>
-        <h2 style={{color: "#BB86FC",margin:'0 0 .5rem 0'}}>Select Configuration:</h2>
+        <h2 style={{color: "#8CFC86",margin:'0 0 .5rem 0'}}>Select Configuration:</h2>
           {configurations && configurations.length > 0 ? (
             <div className='select'>
               <select onChange={handleConfigurationSelect}>
@@ -128,7 +128,7 @@ const FileProcessor = ({token}) => {
           )}
       </div>
       <div className='gpt-container'>
-        <h2 style={{color: "#BB86FC"}}>GPT Details:</h2>
+        <h2 style={{color: "#8CFC86"}}>GPT Details:</h2>
         <div className='config-container'>
           <div id='gpt-field'>
             <h3>Campaign description:</h3>
@@ -150,11 +150,11 @@ const FileProcessor = ({token}) => {
         <div id='divider' style={{border: "1px solid rgb(47, 51, 54)", width: '100%', margin: '1rem'}}></div>
         <div className='upload-container'>
           <div className='file-container'>
-            <h2 style={{color: "#BB86FC"}}>Upload File:</h2>
+            <h2 style={{color: "#8CFC86"}}>Upload File:</h2>
             <input id='file' type="file" accept=".xlsx,.xls" onChange={handleFileUpload} />
           </div>
           <div className='delivery-container'>
-            <h2 style={{color: "#BB86FC"}}>Delivery Method:</h2>
+            <h2 style={{color: "#8CFC86"}}>Delivery Method:</h2>
             <div className='radio-container'>
               <div id='radio'>
                 <input name='deliveryMethod' type="radio" onChange={handleDeliveryMethodChange} id='text' checked={deliveryMethod === 'text'} value='text'/>

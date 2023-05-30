@@ -137,7 +137,7 @@ const Configurations = ({ onFileUpload, jsonData, token }) => {
   return (
     <div className="configurations">
       {(updateMsg) && <Notification message={updateMsg.msg} msgColor={updateMsg.color}/>}
-      <h1 style={{color: "#03DAC5"}}>Configurations</h1>
+      <h1 style={{color: "#FFFFFF"}}>Configurations</h1>
       <div className='select-config-container'>
         <div className='upload-config-container'>
           <p style={{width: 'fit-content', margin: '0'}}>Upload a file below to create a configuration:</p>
